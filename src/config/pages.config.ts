@@ -1,0 +1,15 @@
+export const PAGES = {
+	PIZZA: '/pizza',
+	COMBO: '/combo',
+	SNACKS: '/snacks',
+	COCKTAILS: '/cocktails',
+	COFFEE: '/coffee',
+	DRINKS: '/drinks',
+	DESSERTS: '/desserts',
+	SAUSE: '/sause',
+	OTHERSTUFF: '/otherStuff',
+	MORE: '/more',
+	BREAKFAST: '/breakfast',
+	OTHER: '/other',
+	STOCKS: '/stocks',
+}
