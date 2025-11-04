@@ -6,15 +6,15 @@ import { StoreProvider } from './StoreProvider'
 import Footer from '@/components/Footer/Footer'
 import { NavBarProvider } from '@/context/NavBarContext'
 
-const geistSans = Geist({
-	variable: '--font-geist-sans',
+/* const geistSans = Geist({
+	variable: '--font-',
 	subsets: ['latin'],
 })
 
 const geistMono = Geist_Mono({
 	variable: '--font-geist-mono',
 	subsets: ['latin'],
-})
+}) */
 
 export const metadata: Metadata = {
 	title: {
@@ -31,14 +31,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en' suppressHydrationWarning>
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+			<body className={`font-nimbus  antialiased`}>
 				<main className='w-full min-h-screen flex flex-col items-center'>
-					<div className='md:w-[90%] lg:w-[80%] xl:w-[70%]'>
+					<div className='md:w-[90%] lg:w-[80%] xl:w-[73%]'>
 						<StoreProvider>
-							<NavBarProvider>
-								<NavBar />
-								{children}
-							</NavBarProvider>
+							<NavBarProvider>{children}</NavBarProvider>
 						</StoreProvider>
 					</div>
 					<Footer />

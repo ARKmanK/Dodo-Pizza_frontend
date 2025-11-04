@@ -2,10 +2,11 @@ import { formSchema } from '@/app/order/OrderForm'
 import { Product } from '@/types/products'
 import { z } from 'zod'
 
-const API = process.env.API_URL
+/* const API = process.env.API_URL */
+const API = 'http://localhost:3000/api/products/'
 
-export const getProducts = async () => {
-	const res = await fetch(API, { next: { revalidate: 60 } })
+export const getProducts = async (type: string) => {
+	const res = await fetch(`${API}/${type}`, { next: { revalidate: 60 } })
 	if (!res.ok) throw Error('Failed to fetch products')
 	return res.json() as Promise<Product[]>
 }

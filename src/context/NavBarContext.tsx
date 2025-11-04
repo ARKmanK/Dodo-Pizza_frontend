@@ -1,22 +1,24 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 
 interface NavBarContextType {
-	isNavFixed: boolean
-	setIsNavFixed: (isFixed: boolean) => void
+	isFixed: boolean
+	setIsFixed: (isFixed: boolean) => void
 }
 
 const NavBarContext = createContext<NavBarContextType | undefined>(undefined)
 
 export function NavBarProvider({ children }: { children: ReactNode }) {
-	const [isNavFixed, setIsNavFixed] = useState(false)
+	const [isFixed, setIsFixed] = useState(false)
+	const pathname = usePathname()
 
-	return (
-		<NavBarContext.Provider value={{ isNavFixed, setIsNavFixed }}>
-			{children}
-		</NavBarContext.Provider>
-	)
+	useEffect(() => {
+		setIsFixed(false)
+	}, [pathname])
+
+	return <NavBarContext.Provider value={{ isFixed, setIsFixed }}>{children}</NavBarContext.Provider>
 }
 
 export function useNavBar() {

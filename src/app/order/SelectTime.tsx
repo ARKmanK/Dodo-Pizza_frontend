@@ -32,7 +32,7 @@ const SelectTime = ({ onSelect }: { onSelect: (time: string) => void }) => {
 						{timeSlots.map(time => (
 							<Button
 								key={time}
-								className='bg-gray-100 text-black hover:bg-gray-100 focus:border-2 focus:border-[#ff6900]'
+								className='bg-gray-100 text-black hover:bg-gray-100 focus:border-2 focus:border-[#ff6900] font-semibold'
 								onClick={() => handleClick(time)}
 							>
 								{time}

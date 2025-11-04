@@ -21,13 +21,13 @@ const StuffCarousel = () => {
 				}}
 				className='w-full max-w-sm my-4'
 			>
-				<CarouselContent className='flex'>
+				<CarouselContent className='flex ml-0.5'>
 					<Souses />
 					{STUFF_CAROUSEL.map((item, index) => (
 						<CarouselItem key={index} className='basis-auto'>
 							<div className='p-1'>
 								<Card
-									className='py-2 min-h-30 flex items-center justify-center'
+									className='py-2 min-h-30 flex items-center justify-center cursor-pointer'
 									onClick={() => handleClick(item)}
 								>
 									<CardContent className='flex items-center justify-center'>
@@ -38,9 +38,9 @@ const StuffCarousel = () => {
 											alt='stuff_img'
 											style={{ width: '55px', height: '80px', objectFit: 'contain' }}
 										/>
-										<div className='flex flex-col mt-2 font-medium ml-2'>
+										<div className='flex flex-col mt-2 text-sm font-semibold ml-2'>
 											<p className='text-left text-wrap max-w-32'>{item.title}</p>
-											<p className='text-left'>{item.price} Руб.</p>
+											<p className='text-left mt-1'>{item.price} Руб.</p>
 										</div>
 									</CardContent>
 								</Card>

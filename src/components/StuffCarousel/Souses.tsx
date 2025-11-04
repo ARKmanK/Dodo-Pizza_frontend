@@ -13,6 +13,7 @@ const Souses = () => {
 	const handleClick = (item: Product) => {
 		toggleCart(item)
 	}
+
 	return (
 		<CarouselItem className='basis-auto'>
 			<Sheet>
@@ -27,20 +28,25 @@ const Souses = () => {
 									alt='sauce_img'
 									className='object-contain'
 								/>
-								<p className='text-left text-wrap font-medium pt-1'>Соусы</p>
+								<p className='text-left text-wrap font-semibold pt-1'>Соусы</p>
 							</CardContent>
 						</Card>
 					</div>
 				</SheetTrigger>
 				<SheetTitle></SheetTitle>
-				<SheetContent side='bottom' className='w-96 ml-auto h-[50vh] rounded-[10px] p-8'>
+				<SheetContent side='bottom' className='w-96 ml-auto h-[65vh] rounded-[10px] p-6'>
 					<p className='pt-3 font-semibold text-xl'>Соусы к бортикам и закускам</p>
 					{SAUCES.map((item, index) => (
 						<div key={index} className='flex items-center'>
-							<Image width={40} height={40} src={item.image} alt='sauce-img' />
+							<Image width={70} height={70} src={item.image} alt='sauce-img' />
 							<div className='flex justify-between w-full ml-3 items-center'>
-								<p className='font-medium'>{item.title}</p>
-								<Button onClick={() => handleClick(item)}>{item.price} Руб.</Button>
+								<p className='font-semibold text-sm'>{item.title}</p>
+								<Button
+									className='rounded-full transf-none bg-[#fff0e6] text-[#ff7b00] px-2 py-1 hover:bg-[#ffd2b3]'
+									onClick={() => handleClick(item)}
+								>
+									{item.price} Руб.
+								</Button>
 							</div>
 						</div>
 					))}

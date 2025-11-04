@@ -45,7 +45,7 @@ export const MENU = [
 		name: 'Другие товары',
 	},
 	{
-		href: PAGES.MORE,
+		href: PAGES.NEW,
 		name: 'Новинки',
 	},
 	{
@@ -53,11 +53,11 @@ export const MENU = [
 		name: 'Завтрак',
 	},
 	{
-		href: PAGES.MORE,
+		href: PAGES.OTHER,
 		name: 'Ещё',
 	},
 	{
-		href: PAGES.SNACKS,
+		href: PAGES.STOCKS,
 		name: 'Акции',
 	},
 ]

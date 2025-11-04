@@ -14,7 +14,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { QRCodeSVG } from 'qrcode.react'
-
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -31,7 +30,7 @@ import OrderBox from './OrderBox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/utils/utils'
-import { ArrowLeft } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import {
 	Dialog,
@@ -44,6 +43,7 @@ import PromoCode from './PromoCode'
 import { handlePayment } from '@/lib/api'
 import { useActions } from '@/hooks/useActions'
 import { useCartSummary } from '@/hooks/useCartSummary'
+import { OrderObserver } from './OrderObserver'
 
 export const formSchema = z.object({
 	name: z
@@ -70,7 +70,7 @@ export const formSchema = z.object({
 	time: z.enum(['Побыстрее', ...getDeliveryTime()]).refine(val => val !== undefined, {
 		message: 'Выберите время самовывоза',
 	}),
-	paymentMethod: z.enum(['SberPay', 'SFT']),
+	paymentMethod: z.enum(['SberPay', 'СБП', 'Картой в пиццерии', 'Наличными']),
 })
 
 const paymentData = {
@@ -123,7 +123,7 @@ const OrderForm = () => {
 						name='name'
 						render={({ field }) => (
 							<FormItem className='flex'>
-								<FormLabel className='min-w-[15%]'>Имя</FormLabel>
+								<FormLabel className='min-w-[15%] font-semibold'>Имя</FormLabel>
 								<FormControl className='max-w-[20%]'>
 									<Input placeholder='Имя' {...field} />
 								</FormControl>
@@ -136,7 +136,7 @@ const OrderForm = () => {
 						name='phone'
 						render={({ field }) => (
 							<FormItem className='flex'>
-								<FormLabel className='min-w-[15%]'>Номер телефона</FormLabel>
+								<FormLabel className='min-w-[15%] font-semibold'>Номер телефона</FormLabel>
 								<FormControl className='max-w-[20%]'>
 									<Input
 										type='tel'
@@ -157,7 +157,7 @@ const OrderForm = () => {
 						name='address'
 						render={({ field }) => (
 							<FormItem className='flex'>
-								<FormLabel className='min-w-[15%]'>Адрес пиццерии</FormLabel>
+								<FormLabel className='min-w-[15%] font-semibold'>Адрес пиццерии</FormLabel>
 								<FormControl className='max-w-[20%]'>
 									<DropdownMenu>
 										<DropdownMenuTrigger asChild>
@@ -191,14 +191,14 @@ const OrderForm = () => {
 						name='time'
 						render={({ field }) => (
 							<FormItem className='flex relative'>
-								<FormLabel className='min-w-[15%]'>Время самовывоза</FormLabel>
+								<FormLabel className='min-w-[15%]  font-semibold'>Время самовывоза</FormLabel>
 								<FormControl className='max-w-[20%]'>
 									<div className='flex gap-2'>
 										{timeOptions.map(time => (
 											<Button
 												key={time}
 												type='button'
-												className='text-black rounded-[10px] hover:bg-inherit transform-none shadow-xl bg-gray-100 min-w-32 box-border transition-all duration-100 ease-out focus:border-2 focus:border-[#ff6900]'
+												className='text-black rounded-[10px] hover:bg-inherit transform-none shadow-xl bg-gray-100 min-w-32 box-border transition-all duration-100 ease-out focus:border-2 focus:border-[#ff6900] font-semibold'
 												onClick={() => field.onChange(time)}
 											>
 												{time}
@@ -222,15 +222,45 @@ const OrderForm = () => {
 										<p className='font-bold text-2xl'>Способы оплаты</p>
 										<RadioGroup onValueChange={field.onChange} value={field.value} className='mt-8'>
 											<div className='flex items-center gap-3'>
-												<RadioGroupItem value='SberPay' id='r1' className='border-black' />
+												<RadioGroupItem
+													value='SberPay'
+													id='r1'
+													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
+												/>
 												<Label htmlFor='r1' className='text-lg'>
+													<img src='/sberPay.png' className='w-[50px] h-[28px]' />
 													SberPay
 												</Label>
 											</div>
 											<div className='flex items-center gap-3'>
-												<RadioGroupItem value='SFT' id='r2' className='border-black' />
+												<RadioGroupItem
+													value='Картой в пиццерии'
+													id='r2'
+													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
+												/>
 												<Label htmlFor='r2' className='text-lg'>
-													Система быстрых переводов
+													Картой в пиццерии
+												</Label>
+											</div>
+											<div className='flex items-center gap-3'>
+												<RadioGroupItem
+													value='Наличными'
+													id='r3'
+													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
+												/>
+												<Label htmlFor='r3' className='text-lg'>
+													Наличными
+												</Label>
+											</div>
+											<div className='flex items-center gap-3'>
+												<RadioGroupItem
+													value='СБП'
+													id='r4'
+													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
+												/>
+												<Label htmlFor='r4' className='text-lg'>
+													<img src='/sbp.png' className='w-[28px] h-[28px]' />
+													Через СБП
 												</Label>
 											</div>
 										</RadioGroup>
@@ -241,9 +271,9 @@ const OrderForm = () => {
 						)}
 					/>
 					<div className='flex justify-between w-[60%]'>
-						<Button className='text-lg py-6 rounded-[25px] transf-none'>
+						<Button className='text-lg py-6 rounded-[25px] transf-none bg-[#c5c5d1] hover:bg-[#a5a5b3] text-black'>
 							<Link href='/pizza' className='flex items-center'>
-								<ArrowLeft size={30} /> Назад в корзину
+								<ChevronLeft color='black' size={30} /> Назад в корзину
 							</Link>
 						</Button>
 
@@ -251,12 +281,34 @@ const OrderForm = () => {
 							<Button
 								type='submit'
 								className={cn(
-									'text-lg px-15 py-6 rounded-[25px] transf-none bg-amber-400',
+									'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#349946] hover:bg-[#42ae56]',
 									!form.formState.isValid && 'opacity-50 cursor-not-allowed'
 								)}
 								disabled={!form.formState.isValid}
 							>
 								Оплатить через SberPay
+							</Button>
+						) : paymentMethod === 'Картой в пиццерии' ? (
+							<Button
+								type='submit'
+								className={cn(
+									'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#f36b0a] hover:bg-[#d15b07]',
+									!form.formState.isValid && 'opacity-50 cursor-not-allowed'
+								)}
+								disabled={!form.formState.isValid}
+							>
+								Оформить самовывоз
+							</Button>
+						) : paymentMethod === 'Наличными' ? (
+							<Button
+								type='submit'
+								className={cn(
+									'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#f36b0a] hover:bg-[#d15b07]',
+									!form.formState.isValid && 'opacity-50 cursor-not-allowed'
+								)}
+								disabled={!form.formState.isValid}
+							>
+								Оформить самовывоз
 							</Button>
 						) : (
 							<Dialog>
@@ -264,12 +316,12 @@ const OrderForm = () => {
 									<Button
 										type='button'
 										className={cn(
-											'text-lg px-15 py-6 rounded-[25px] transf-none bg-green-400',
+											'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#1c1241] hover:bg-[#3f3662]',
 											!form.formState.isValid && 'opacity-50 cursor-not-allowed'
 										)}
 										disabled={!form.formState.isValid}
 									>
-										Оплатить сбп
+										Оплатить <img src='/sbp.png' className='w-[30px] h-[30px]' /> сбп
 									</Button>
 								</DialogTrigger>
 								<DialogContent>
@@ -278,7 +330,7 @@ const OrderForm = () => {
 									</DialogHeader>
 									<div className='flex flex-col items-center'>
 										<QRCodeSVG value={JSON.stringify(paymentData)} size={256} />
-										<p className='mt-4'>Сумма к оплате: {priceWithDiscount.toFixed(2)} руб.</p>
+										<p className='mt-4'>Сумма к оплате: {priceWithDiscount} руб.</p>
 									</div>
 								</DialogContent>
 							</Dialog>
@@ -286,7 +338,7 @@ const OrderForm = () => {
 					</div>
 				</form>
 			</Form>
-			<OrderBox />
+			<OrderObserver />
 		</>
 	)
 }

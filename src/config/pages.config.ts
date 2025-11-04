@@ -8,8 +8,25 @@ export const PAGES = {
 	DESSERTS: '/desserts',
 	SAUSE: '/sause',
 	OTHERSTUFF: '/otherStuff',
-	MORE: '/more',
+	NEW: '/new',
 	BREAKFAST: '/breakfast',
 	OTHER: '/other',
 	STOCKS: '/stocks',
-}
+} as const
+
+export const API_ENDPOINTS = {
+	Пицца: 'pizza',
+	Комбо: 'combo',
+	Закуски: 'snacks',
+	Коктейли: 'cocktails',
+	Кофе: 'coffee',
+	Напитки: 'drinks',
+	Десерты: 'desserts',
+	Соусы: 'sause',
+	'Другие товары': 'otherstuff',
+	Новинки: 'new',
+	Завтрак: 'breakfast',
+	Хиты: 'hit',
+	'На компанию': 'company',
+	'Любят дети': 'children',
+} as const

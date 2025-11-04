@@ -71,7 +71,7 @@ const CartTable = () => {
 									</TableCell>
 									<TableCell>
 										<span className='min-w-[2rem] text-center'>
-											{(product.price * product.quantity).toFixed(2)} Руб.
+											{product.price * product.quantity} Руб.
 										</span>
 									</TableCell>
 								</TableRow>
