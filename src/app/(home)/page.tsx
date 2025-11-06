@@ -1,4 +1,5 @@
 import Header from '@/components/Header/Header'
+import Messager from '@/components/Messager'
 import NavBar from '@/components/NavBar/NavBar'
 import { ObserverHeading } from '@/components/ObserverHeading'
 
@@ -14,6 +15,7 @@ const HomePage = () => {
 					<Header />
 				</ObserverHeading>
 				<ProductSection />
+				<Messager />
 			</main>
 		</>
 	)

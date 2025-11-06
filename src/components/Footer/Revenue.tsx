@@ -1,13 +1,16 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 
 const Revenue = () => {
 	const [revenue, setRevenue] = useState(0)
 
 	useEffect(() => {
-		const ws = new WebSocket('ws://localhost:4200')
+		const ws = new WebSocket('ws://localhost:4200/revenue')
 
-		ws.onopen = () => {}
+		ws.onopen = () => {
+			console.log('WebSocket /revenue connected')
+		}
 
 		ws.onmessage = e => {
 			const data = JSON.parse(e.data)
