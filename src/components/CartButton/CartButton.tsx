@@ -43,7 +43,7 @@ const CartButton = () => {
 					</div>
 				</SheetTrigger>
 				<SheetContent
-					className='bg-[#e2e2eb] border-none h-screen flex flex-col overflow-y-auto'
+					className='bg-[#e2e2eb] border-none h-screen flex flex-col overflow-y-auto custom-scrollbar'
 					hideCloseButton={true}
 				>
 					<div className='flex flex-col flex-grow'>
@@ -51,7 +51,7 @@ const CartButton = () => {
 							<p className='text-center text-lg font-medium'>Загрузка...</p>
 						) : cart.products.length ? (
 							<>
-								<SheetTitle className='my-4 ml-4 text-xl'>
+								<SheetTitle className='py-4 ml-4 text-xl'>
 									{`${quantity} ${getProductLabel(quantity)} на ${price} Руб.`}
 								</SheetTitle>
 								<div className='flex-grow overflow-y-auto'>
@@ -67,7 +67,7 @@ const CartButton = () => {
 										<StuffCarousel />
 									</div>
 								</div>
-								<div className='mt-auto p-6 bg-white flex flex-col'>
+								<div className='mt-auto p-6 bg-white flex flex-col shadow-t-'>
 									<>
 										<CartPromoCode />
 										<Separator className='mt-2' />

@@ -5,7 +5,7 @@ import Logo from '@/components/Header/Logo'
 
 const OrderPage = () => {
 	return (
-		<>
+		<div className='md:w-[90%] lg:w-[80%] xl:w-[73%]'>
 			<main className='px-4 pt-4 flex-col items-center'>
 				<NavBarProvider>
 					<ObserverHeading margin='-30px'>
@@ -17,7 +17,7 @@ const OrderPage = () => {
 					</div>
 				</NavBarProvider>
 			</main>
-		</>
+		</div>
 	)
 }
 

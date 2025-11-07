@@ -65,7 +65,7 @@ const Messager = () => {
 	return (
 		<>
 			<Popover>
-				<PopoverTrigger className=' fixed bottom-10 right-10 w-15 h-15 rounded-full'>
+				<PopoverTrigger className='fixed bottom-10 right-10 w-15 h-15 rounded-full transition-all ease-out duration-300'>
 					<div className='flex items-center justify-center'>
 						<Image height={60} width={60} src='/messagerIcon.png' alt='messager-logo' />
 					</div>

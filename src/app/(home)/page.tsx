@@ -1,23 +1,16 @@
 import Header from '@/components/Header/Header'
-import Messager from '@/components/Messager'
-import NavBar from '@/components/NavBar/NavBar'
-import { ObserverHeading } from '@/components/ObserverHeading'
-
 import ProductSection from '@/components/ProductSection'
-import { NavBarProvider } from '@/context/NavBarContext'
 
 const HomePage = () => {
 	return (
-		<>
+		<div className='md:w-[90%] lg:w-[80%] xl:w-[73%]'>
 			<main className='px-4 pt-4 flex-col items-center'>
-				<ObserverHeading margin={'-35px'}>
-					<NavBar />
-					<Header />
-				</ObserverHeading>
-				<ProductSection />
-				<Messager />
+				<div className='w-full not-first:flex flex-col items-center'>
+					<Header showNews={true} />
+					<ProductSection />
+				</div>
 			</main>
-		</>
+		</div>
 	)
 }
 

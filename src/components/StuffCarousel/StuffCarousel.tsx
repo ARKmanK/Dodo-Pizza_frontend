@@ -1,5 +1,11 @@
 import { STUFF_CAROUSEL } from '@/data/stuffCarousel'
-import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+} from '../ui/carousel'
 import { Card, CardContent } from '../ui/card'
 import Image from 'next/image'
 import { useActions } from '@/hooks/useActions'
@@ -48,6 +54,8 @@ const StuffCarousel = () => {
 						</CarouselItem>
 					))}
 				</CarouselContent>
+				<CarouselPrevious className='absolute left-2 top-1/2 transform -translate-y-1/2 z-10' />
+				<CarouselNext className='absolute right-2 top-1/2 transform -translate-y-1/2 z-10' />
 			</Carousel>
 		</>
 	)
