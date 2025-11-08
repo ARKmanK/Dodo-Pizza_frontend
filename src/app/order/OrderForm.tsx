@@ -45,7 +45,7 @@ import { useActions } from '@/hooks/useActions'
 import { useCartSummary } from '@/hooks/useCartSummary'
 import { OrderObserver } from './OrderObserver'
 
-export const formSchema = z.object({
+const formSchema = z.object({
 	name: z
 		.string()
 		.min(3, {

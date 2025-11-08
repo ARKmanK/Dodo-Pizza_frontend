@@ -3,14 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ICartItem extends Product {}
 
-/* export interface ICartState {
-	products: ICartItem[]
-	promoCode: {
-		promo: string
-		discount: number
-	}
-} */
-
 export interface IPromoCode {
 	promo: string
 	discount: number
@@ -79,4 +71,5 @@ export const cartSlice = createSlice({
 	},
 })
 
-export const { actions: cartActions, reducer } = cartSlice
+export const { actions: cartActions, reducer: cartReducer } = cartSlice
+export default cartReducer

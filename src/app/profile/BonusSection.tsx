@@ -4,8 +4,7 @@ import Image from 'next/image'
 const BonusSection = () => {
 	return (
 		<>
-			{/* <div> */}
-			<section className='w-full flex justify-center bg-[#f3f3f7]'>
+			<section className='w-full flex justify-center bg-[#f3f3f7] pl-6'>
 				<div className='md:w-[90%] lg:w-[80%] xl:w-[73%] py-2'>
 					<p className='text-lg font-semibold py-4'>Бонусы</p>
 					<Card className='w-[230px] h-[280px] flex flex-col shadow-lg'>

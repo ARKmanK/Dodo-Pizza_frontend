@@ -1,20 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { reducer as cartReducer } from './cart/cart.slice'
 import { loadState, saveState } from '@/lib/localStorageUtils'
+import userReducer from './user/user.slice'
+import cartReducer from './cart/cart.slice'
 
-const initialState = loadState() || {
-	cart: {
-		products: [],
-		promoCode: {
-			promo: '',
-			discount: 0,
-		},
-	},
-}
+const initialState = loadState()
 
 export const store = configureStore({
 	reducer: {
 		cart: cartReducer,
+		user: userReducer,
 	},
 	preloadedState: initialState,
 })
@@ -24,5 +18,8 @@ export type AppDispatch = typeof store.dispatch
 
 store.subscribe(() => {
 	const state = store.getState()
-	saveState(state)
+	saveState({
+		cart: state.cart,
+		user: state.user,
+	})
 })
