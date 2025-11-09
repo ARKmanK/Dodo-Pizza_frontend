@@ -11,7 +11,7 @@ const PromoCode = () => {
 	const [promo, setPromo] = useState('')
 	const [isValid, setIsValid] = useState<true | false | null>(null)
 	const { setPromoCode } = useActions()
-	const { cart, price, discountCode, discount, priceWithDiscount, quantity } = useCartSummary()
+	const { discountCode, discount } = useCartSummary()
 
 	useEffect(() => {
 		if (discount) {

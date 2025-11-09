@@ -15,7 +15,7 @@ import CartPromoCode from './CartPromoCode'
 const CartButton = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [isCartLoaded, setIsCartLoaded] = useState(false)
-	const { cart, price, discountCode, discount, priceWithDiscount, quantity } = useCartSummary()
+	const { cart, price, priceWithDiscount, quantity } = useCartSummary()
 
 	useEffect(() => {
 		setIsCartLoaded(true)

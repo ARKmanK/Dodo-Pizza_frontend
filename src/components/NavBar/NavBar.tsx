@@ -16,7 +16,6 @@ import { cn } from '@/utils/utils'
 import { usePathname, useRouter } from 'next/navigation'
 import CartButton from '../CartButton/CartButton'
 import { PAGES } from '@/config/pages.config'
-import { useEffect, useState } from 'react'
 
 const NavBar = () => {
 	const { isFixed } = useNavBar()

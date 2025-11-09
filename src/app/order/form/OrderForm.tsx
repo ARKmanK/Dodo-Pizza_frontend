@@ -23,12 +23,8 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
-import SelectTime from './SelectTime'
 import { handlePhoneInput, handlePhonePaste } from '@/utils/phoneInputHandler'
 import { getDeliveryTime } from '@/utils/getDeliveryTime'
-import OrderBox from './OrderBox'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
 import { cn } from '@/utils/utils'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
@@ -39,13 +35,15 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import PromoCode from './PromoCode'
 import { handlePayment } from '@/lib/api'
 import { useActions } from '@/hooks/useActions'
 import { useCartSummary } from '@/hooks/useCartSummary'
-import { OrderObserver } from './OrderObserver'
+import { OrderObserver } from '../OrderObserver'
+import PaymentMethod from './PaymentMethod'
+import PromoCode from './PromoCode'
+import SelectTime from './SelectTime'
 
-const formSchema = z.object({
+export const formSchema = z.object({
 	name: z
 		.string()
 		.min(3, {
@@ -70,7 +68,8 @@ const formSchema = z.object({
 	time: z.enum(['Побыстрее', ...getDeliveryTime()]).refine(val => val !== undefined, {
 		message: 'Выберите время самовывоза',
 	}),
-	paymentMethod: z.enum(['SberPay', 'СБП', 'Картой в пиццерии', 'Наличными']),
+	paymentMethod: z.enum(['SberPay', 'СБП', 'Картой в пиццерии', 'Наличными', 'Картой на сайте']),
+	selectedCardId: z.string().optional(),
 })
 
 const paymentData = {
@@ -85,8 +84,8 @@ const paymentData = {
 }
 
 const OrderForm = () => {
-	const { clearCart } = useActions()
-	const { cart, price, discountCode, discount, priceWithDiscount, quantity } = useCartSummary()
+	const { clearCart, updatePurchaseHistory } = useActions()
+	const { priceWithDiscount } = useCartSummary()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -96,11 +95,13 @@ const OrderForm = () => {
 			address: 'ул. Ленина, 10',
 			time: 'Побыстрее',
 			paymentMethod: 'SberPay',
+			selectedCardId: '',
 		},
 		mode: 'onChange',
 	})
 
 	const paymentMethod = form.watch('paymentMethod')
+	const selectedCardId = form.watch('selectedCardId')
 	const timeSlots = getDeliveryTime()
 	const timeOptions = ['Побыстрее', timeSlots[0] || '', timeSlots[1] || '']
 
@@ -108,10 +109,27 @@ const OrderForm = () => {
 		form.setValue('time', time)
 	}
 
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		if (values.paymentMethod === 'SberPay') {
-			handlePayment(values, priceWithDiscount, clearCart)
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		try {
+			if (values.paymentMethod === 'SberPay' || values.paymentMethod === 'Картой на сайте') {
+				await handlePayment(values, priceWithDiscount)
+			} else {
+				alert(`Ожидаем вас по адресу ${values.address}`)
+			}
+
+			const token = localStorage.getItem('token')
+			if (token) {
+				updatePurchaseHistory({
+					purchaseTime: values.time,
+					purchasePrice: priceWithDiscount,
+					purchasePaymentMethod: values.paymentMethod,
+				})
+			}
+			clearCart()
+		} catch (error) {
+			console.error('Ошибка при оплате:', error)
 		}
+		form.reset()
 	}
 
 	return (
@@ -212,81 +230,34 @@ const OrderForm = () => {
 						)}
 					/>
 					<PromoCode />
-					<FormField
-						control={form.control}
-						name='paymentMethod'
-						render={({ field }) => (
-							<FormItem className='flex relative'>
-								<FormControl>
-									<section className='p-6 bg-[#f3f3f7] min-h-[300px] w-[60%] rounded-[20px] mt-25'>
-										<p className='font-bold text-2xl'>Способы оплаты</p>
-										<RadioGroup onValueChange={field.onChange} value={field.value} className='mt-8'>
-											<div className='flex items-center gap-3'>
-												<RadioGroupItem
-													value='SberPay'
-													id='r1'
-													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
-												/>
-												<Label htmlFor='r1' className='text-lg'>
-													<img src='/sberPay.png' className='w-[50px] h-[28px]' />
-													SberPay
-												</Label>
-											</div>
-											<div className='flex items-center gap-3'>
-												<RadioGroupItem
-													value='Картой в пиццерии'
-													id='r2'
-													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
-												/>
-												<Label htmlFor='r2' className='text-lg'>
-													Картой в пиццерии
-												</Label>
-											</div>
-											<div className='flex items-center gap-3'>
-												<RadioGroupItem
-													value='Наличными'
-													id='r3'
-													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
-												/>
-												<Label htmlFor='r3' className='text-lg'>
-													Наличными
-												</Label>
-											</div>
-											<div className='flex items-center gap-3'>
-												<RadioGroupItem
-													value='СБП'
-													id='r4'
-													className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
-												/>
-												<Label htmlFor='r4' className='text-lg'>
-													<img src='/sbp.png' className='w-[28px] h-[28px]' />
-													Через СБП
-												</Label>
-											</div>
-										</RadioGroup>
-									</section>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<PaymentMethod form={form} paymentMethod={paymentMethod} />
 					<div className='flex justify-between w-[60%]'>
 						<Button className='text-lg py-6 rounded-[25px] transf-none bg-[#c5c5d1] hover:bg-[#a5a5b3] text-black'>
 							<Link href='/pizza' className='flex items-center'>
 								<ChevronLeft color='black' size={30} /> Назад в корзину
 							</Link>
 						</Button>
-
 						{paymentMethod === 'SberPay' ? (
 							<Button
 								type='submit'
 								className={cn(
 									'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#349946] hover:bg-[#42ae56]',
-									!form.formState.isValid && 'opacity-50 cursor-not-allowed'
+									(!form.formState.isValid || !selectedCardId) && 'opacity-50 cursor-not-allowed'
 								)}
-								disabled={!form.formState.isValid}
+								disabled={!form.formState.isValid || !selectedCardId}
 							>
 								Оплатить через SberPay
+							</Button>
+						) : paymentMethod === 'Картой на сайте' ? (
+							<Button
+								type='submit'
+								className={cn(
+									'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#f36b0a] hover:bg-[#d15b07]',
+									(!form.formState.isValid || !selectedCardId) && 'opacity-50 cursor-not-allowed'
+								)}
+								disabled={!form.formState.isValid || !selectedCardId}
+							>
+								Оформить заказ на {priceWithDiscount} Руб.
 							</Button>
 						) : paymentMethod === 'Картой в пиццерии' ? (
 							<Button

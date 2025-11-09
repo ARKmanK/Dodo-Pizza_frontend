@@ -20,8 +20,8 @@ export interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-	const { cart, price, discount, priceWithDiscount, quantity } = useCartSummary()
 	const [isInCart, setIsInCart] = useState(false)
+	const { cart } = useCartSummary()
 	const { toggleCart } = useActions()
 
 	useEffect(() => {

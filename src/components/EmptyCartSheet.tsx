@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { SheetContent, SheetTitle } from './ui/sheet'
+import { SheetTitle } from './ui/sheet'
 
 const EmptyCartSheet = () => {
 	return (

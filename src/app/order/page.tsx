@@ -1,6 +1,6 @@
 import { NavBarProvider } from '@/context/NavBarContext'
 import { ObserverHeading } from '../../components/ObserverHeading'
-import OrderForm from './OrderForm'
+import OrderForm from './form/OrderForm'
 import Logo from '@/components/Header/Logo'
 
 const OrderPage = () => {

@@ -7,7 +7,6 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from '@/components/ui/dialog'
 import {
 	Form,
@@ -26,9 +25,10 @@ import {
 	formatExpiryDate,
 	validateExpiryDate,
 } from '@/utils/cardInputHandler'
+import { hideCardNumber } from '@/utils/hideCardNumber'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
@@ -48,12 +48,16 @@ const formSchema = z.object({
 })
 
 const UserCreditCard = () => {
-	const cards = '2'
-	const deleteCard = () => {}
-	/* const { getCardsData, removeCard } = useActions() */
-	/* const {card, history, ordersNumber} = useUserSummary() */
+	const [isMounted, setIsMounted] = useState(false)
+	const [activeDialog, setActiveDialog] = useState<null | 'add' | number>(null)
 	const prevDateValue = useRef('')
-	const [activeDialog, setActiveDialog] = useState<null | 'add' | 'delete'>(null)
+	const { addCard, removeCard } = useActions()
+	const { cards } = useUserSummary()
+	const cardToDelete = cards.find(card => card.id === activeDialog)
+
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -66,22 +70,80 @@ const UserCreditCard = () => {
 	})
 
 	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		console.log(values)
+		addCard({
+			cardNumber: values.number,
+			cardDate: values.date,
+			cardCVV: values.cvv,
+		})
 		setActiveDialog(null)
+		form.reset()
 	}
 
 	return (
-		<div className='mt-6'>
+		<div className='mt-15'>
 			<p className='text-xl font-semibold'>Привязанные карты</p>
-
-			{!cards ? (
+			{isMounted ? (
 				<>
-					<Button
-						className='mt-5 px-4 py-2 bg-[#ff6900] rounded-[20px] text-white font-semibold'
-						onClick={() => setActiveDialog('add')}
-					>
-						Добавить карту
-					</Button>
+					{cards.length ? (
+						<div className='space-y-4 mt-4'>
+							{cards.map(card => (
+								<div
+									key={card.id}
+									className='flex items-center justify-between bg-gray-50 p-4 rounded-lg w-[600px]'
+								>
+									<div className='flex items-center space-x-4'>
+										<Image width={65} height={35} src='/mir-card.png' alt='mir-card-img' />
+										<div>
+											<p className='font-semibold'>{hideCardNumber(card.cardNumber)}</p>
+											<p className='text-sm text-gray-500'>Срок: {card.cardDate}</p>
+										</div>
+									</div>
+									<Button
+										className='px-4 py-2 bg-[#f8d6c0] rounded-[20px] text-[#d4712c] hover:bg-[#ff6900] hover:text-white font-semibold text-sm'
+										onClick={() => setActiveDialog(card.id)}
+									>
+										Удалить
+									</Button>
+								</div>
+							))}
+							<Button
+								className='mt-5 px-4 py-2 bg-[#ff6900] hover:bg-[#db5e04] transf-none rounded-[20px] text-white font-semibold'
+								onClick={() => setActiveDialog('add')}
+							>
+								Добавить карту
+							</Button>
+						</div>
+					) : (
+						<Button
+							className='mt-5 px-4 py-2 bg-[#ff6900] hover:bg-[#db5e04] transf-none rounded-[20px] text-white font-semibold'
+							onClick={() => setActiveDialog('add')}
+						>
+							Добавить карту
+						</Button>
+					)}
+					<Dialog open={!!cardToDelete} onOpenChange={open => !open && setActiveDialog(null)}>
+						<DialogContent className='w-[400px]'>
+							<DialogHeader>
+								<DialogTitle className='text-xl font-bold'>
+									Удалить карту {cardToDelete?.cardNumber.slice(-4)}?
+								</DialogTitle>
+								<DialogDescription>Вы уверены в этом действии?</DialogDescription>
+							</DialogHeader>
+							<div className='flex space-x-2'>
+								<Button
+									onClick={() => {
+										if (cardToDelete) {
+											removeCard(cardToDelete.id)
+											setActiveDialog(null)
+										}
+									}}
+									className='flex-1 px-4 py-2 bg-[#f8d6c0] rounded-[20px] text-[#d4712c] hover:bg-[#ff6900] hover:text-white font-semibold text-sm'
+								>
+									Удалить
+								</Button>
+							</div>
+						</DialogContent>
+					</Dialog>
 					<Dialog
 						open={activeDialog === 'add'}
 						onOpenChange={open => !open && setActiveDialog(null)}
@@ -180,38 +242,7 @@ const UserCreditCard = () => {
 					</Dialog>
 				</>
 			) : (
-				<div className='flex items-center'>
-					<div className='flex items-center'>
-						<Image width={65} height={35} src='/mir-card.png' alt='mir-card-img' />
-						<p className='font-semibold'>2200 •••• •••• 3333</p>
-					</div>
-					<Button
-						className='ml-8 px-4 py-2 bg-[#f8d6c0] rounded-[20px] text-[#d4712c] hover:bg-[#d15b07] hover:text-white font-semibold text-sm hover:'
-						onClick={() => setActiveDialog('delete')}
-					>
-						Удалить
-					</Button>
-					<Dialog
-						open={activeDialog === 'delete'}
-						onOpenChange={open => !open && setActiveDialog(null)}
-					>
-						<DialogContent className='w-[400px]'>
-							<DialogHeader>
-								<DialogTitle className='text-xl font-bold'>Удалить карту 3333?</DialogTitle>
-								<DialogDescription>Вы уверены в этом действии?</DialogDescription>
-							</DialogHeader>
-							<Button
-								onClick={() => {
-									deleteCard()
-									setActiveDialog(null)
-								}}
-								className='transf-none px-4 py-2 bg-[#f8d6c0] rounded-[20px] text-[#d4712c] hover:bg-[#d15b07] hover:text-white font-semibold text-sm hover:'
-							>
-								Удалить
-							</Button>
-						</DialogContent>
-					</Dialog>
-				</div>
+				<div className='mt-4 text-gray-500'>Загрузка...</div>
 			)}
 		</div>
 	)

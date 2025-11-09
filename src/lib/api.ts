@@ -1,6 +1,7 @@
-import { formSchema } from '@/app/order/OrderForm'
+import { formSchema } from '@/app/order/form/OrderForm'
+import { IPurchase } from '@/store/user/user.slice'
 import { Product } from '@/types/products'
-import { z } from 'zod'
+import { number, string, z } from 'zod'
 
 /* const API = process.env.API_URL */
 const API = 'http://localhost:3000/api/products/'
@@ -11,13 +12,12 @@ export const getProducts = async (type: string) => {
 	return res.json() as Promise<Product[]>
 }
 
-export const handlePayment = (
+export const handlePayment = async (
 	values: z.infer<typeof formSchema>,
-	price: number,
-	clearCart: () => void
-) => {
+	price: number
+): Promise<any> => {
 	if (price === 0) price = 1
-	fetch('http://localhost:4200/api/payment', {
+	const res = await fetch('http://localhost:4200/api/payment', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -28,9 +28,11 @@ export const handlePayment = (
 			userId: values.name + values.phone,
 		}),
 	})
-		.then(res => res.json())
-		.then(data => {
-			window.location.href = data.confirmation.confirmation_url
-			clearCart()
-		})
+	if (!res.ok) {
+		throw new Error(`HTTP error! status: ${res.status}`)
+	}
+
+	const data = await res.json()
+	window.location.href = data.confirmation.confirmation_url
+	return data
 }

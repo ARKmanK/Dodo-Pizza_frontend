@@ -59,6 +59,24 @@ export const userSlice = createSlice({
 			state.cards = state.cards.filter(card => card.id !== action.payload)
 		},
 
+		updatePurchaseHistory: (
+			state,
+			action: PayloadAction<Omit<IPurchase, 'id' | 'purchaseNumber'>>
+		) => {
+			const newOrder = {
+				id:
+					state.purchaseHistory.length > 0 ? Math.max(...state.cards.map(card => card.id)) + 1 : 1,
+				purchaseNumber:
+					state.purchaseHistory.length > 0
+						? Math.max(...state.purchaseHistory.map(history => +history.purchaseNumber)) + 1
+						: 1,
+				purchaseTime: action.payload.purchaseTime,
+				purchasePrice: action.payload.purchasePrice,
+				purchasePaymentMethod: action.payload.purchasePaymentMethod,
+			}
+			state.purchaseHistory.push(newOrder)
+		},
+
 		updateUserData: (
 			state,
 			action: PayloadAction<{

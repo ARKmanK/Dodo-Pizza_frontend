@@ -18,7 +18,6 @@ const BonusSection = () => {
 					<button className='text-[#ff7515] pt-5 pb-7 text-sm'>Все наши акции</button>
 				</div>
 			</section>
-			{/* 			</div> */}
 		</>
 	)
 }

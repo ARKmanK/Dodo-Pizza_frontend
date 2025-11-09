@@ -9,7 +9,7 @@ import { CirclePoundSterling, Disc2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const OrderBox = () => {
-	const { cart, price, discountCode, discount, priceWithDiscount, quantity } = useCartSummary()
+	const { cart, price, priceWithDiscount, quantity } = useCartSummary()
 	const [isCartLoaded, setIsCartLoaded] = useState(false)
 	const { isFixed } = useNavBar()
 

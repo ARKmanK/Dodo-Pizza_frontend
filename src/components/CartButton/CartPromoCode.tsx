@@ -4,14 +4,13 @@ import { Button } from '@/components/ui/button'
 import { useActions } from '@/hooks/useActions'
 import { useCartSummary } from '@/hooks/useCartSummary'
 import { checkPromo } from '@/utils/checkPromo'
-import { cn } from '@/utils/utils'
 import { useEffect, useState } from 'react'
 
 const CartPromoCode = () => {
 	const [promo, setPromo] = useState('')
 	const [isValid, setIsValid] = useState<true | false | null>(null)
 	const { setPromoCode } = useActions()
-	const { cart, price, discountCode, discount, priceWithDiscount, quantity } = useCartSummary()
+	const { discountCode, discount } = useCartSummary()
 
 	useEffect(() => {
 		if (discount) {

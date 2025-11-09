@@ -1,4 +1,4 @@
-import { CirclePoundSterling, ShoppingBag, Star, User } from 'lucide-react'
+import { CirclePoundSterling, Star } from 'lucide-react'
 import Link from 'next/link'
 import Logo from './Logo'
 import {

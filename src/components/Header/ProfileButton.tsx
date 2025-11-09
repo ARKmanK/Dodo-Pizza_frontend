@@ -176,7 +176,7 @@ const ProfileButton = () => {
 									<div className='w-full flex flex-col justify-center items-center text-center'>
 										<p className='text-[13px] text-gray-600'>
 											Продолжая, вы соглашаетесь с условиями наших{' '}
-											<a href='#' className='text-[#ff7515] text-[12px] underline'>
+											<a href='#' className='text-[#ff7515] text-[12px]'>
 												юридических документов
 											</a>
 										</p>

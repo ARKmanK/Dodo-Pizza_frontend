@@ -15,6 +15,7 @@ export const useUserSummary = () => {
 	const purchaseQuantity = purchaseHistory.length
 
 	return {
+		user,
 		name,
 		phone,
 		birthday,

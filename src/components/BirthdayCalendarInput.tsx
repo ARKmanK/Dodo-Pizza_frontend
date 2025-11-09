@@ -9,6 +9,8 @@ interface DateInputProps {
 	onChange?: (date: Date | undefined) => void
 	className?: string
 	placeholder?: string
+	disabled?: boolean
+	showIcon?: boolean
 }
 
 function BirthdayCalendarInput({
@@ -16,6 +18,8 @@ function BirthdayCalendarInput({
 	onChange,
 	className,
 	placeholder = 'дд.мм.гггг',
+	disabled = false,
+	showIcon = true,
 }: DateInputProps) {
 	const [inputValue, setInputValue] = React.useState(value ? formatDate(value) : '')
 
@@ -74,6 +78,8 @@ function BirthdayCalendarInput({
 	}
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (disabled) return // блокируем изменение если disabled
+
 		let value = e.target.value
 
 		// Удаляем все нецифровые символы
@@ -109,6 +115,8 @@ function BirthdayCalendarInput({
 	}
 
 	const handleBlur = () => {
+		if (disabled) return // блокируем обработку если disabled
+
 		// При потере фокуса очищаем неполные даты
 		if (inputValue && inputValue.length < 10) {
 			setInputValue('')
@@ -133,6 +141,7 @@ function BirthdayCalendarInput({
 				onChange={handleChange}
 				onBlur={handleBlur}
 				placeholder={placeholder}
+				disabled={disabled} // передаем пропс disabled
 				className={cn(
 					'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background',
 					'placeholder:text-muted-foreground',
@@ -141,7 +150,14 @@ function BirthdayCalendarInput({
 				)}
 				maxLength={10}
 			/>
-			<CalendarIcon className='absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none' />
+			{showIcon && (
+				<CalendarIcon
+					className={cn(
+						'absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none',
+						disabled && 'opacity-50'
+					)}
+				/>
+			)}
 		</div>
 	)
 }

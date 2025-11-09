@@ -16,7 +16,7 @@ import { ICartItem } from '@/store/cart/cart.slice'
 import { useEffect, useState } from 'react'
 
 const CartTable = () => {
-	const { cart, price, discountCode, discount, priceWithDiscount, quantity } = useCartSummary()
+	const { cart } = useCartSummary()
 	const { changeAmount } = useActions()
 	const [isCartLoaded, setIsCarLoaded] = useState(false)
 
