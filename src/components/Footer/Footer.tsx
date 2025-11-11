@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { FooterMenu } from './footer-menu'
 import BadgeBlock from '../Badge/Badge'
 import { BADGE_DATA } from '../Badge/badge.data'
-import Revenue from './Revenue'
 
 const Footer = () => {
 	return (
@@ -51,7 +50,9 @@ const Footer = () => {
 							<p className='text-lg font-semibold text-[#8e9296] lg:text-[16px]'>
 								Выручка российской сети в этом месяце
 							</p>
-							<Revenue />
+							<p className='text-lg font-semibold text-[#8e9296] lg:text-[16px]'>
+								В прошлом - 4 219 573 221 Руб.
+							</p>
 						</div>
 						<div className='text-white'>
 							<p className='text-4xl font-semibold mb-3 lg:text-2xl '>1370 пиццерий</p>

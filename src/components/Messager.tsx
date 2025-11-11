@@ -20,10 +20,12 @@ interface ChatMessage {
 const Messager = () => {
 	const [text, setText] = useState('')
 	const [messages, setMessages] = useState<ChatMessage[]>([])
-	const ws = useRef<WebSocket | null>(null)
+	// const ws = useRef<WebSocket | null>(null)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
+		// WebSocket не работает на Vercel - закомментировано
+		/*
 		ws.current = new WebSocket('ws://localhost:4200/chat')
 
 		ws.current.onopen = () => {
@@ -40,6 +42,7 @@ const Messager = () => {
 		return () => {
 			if (ws.current) ws.current.close()
 		}
+		*/
 	}, [])
 
 	useEffect(() => {
@@ -55,7 +58,11 @@ const Messager = () => {
 			timestamp: getCurrentTime(),
 		}
 		try {
-			ws.current?.send(JSON.stringify(message))
+			// WebSocket не работает на Vercel - закомментировано
+			// ws.current?.send(JSON.stringify(message))
+
+			// Вместо WebSocket добавляем сообщение локально для демо
+			setMessages(prev => [...prev, message])
 			setText('')
 		} catch (error) {
 			console.error('Failed to send message:', error)
@@ -71,7 +78,7 @@ const Messager = () => {
 					</div>
 				</PopoverTrigger>
 				<PopoverContent className=' w-[380px] rounded-[25px] mr-17 overflow-y-auto px-0'>
-					<p className='p-3 text-sm text-gray-600'>Добро пожаловать в чат!</p>
+					<p className='p-3 text-sm text-gray-600'>Добро пожаловать в чат! (демо-режим)</p>
 					<Separator />
 					<ScrollArea className='h-[450px] p-2'>
 						{messages.map((msg, index) => (
