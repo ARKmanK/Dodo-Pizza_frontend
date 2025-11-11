@@ -4,8 +4,7 @@ import { Product } from '@/types/products'
 import { number, string, z } from 'zod'
 
 /* const API = process.env.API_URL */
-const API =
-	'https://dodo-pizzafrontend-h70l773cs-artyoms-projects-230a99c0.vercel.app/api/products/'
+const API = 'https://dodo-pizzafrontend.vercel.app/api/products/'
 
 export const getProducts = async (type: string) => {
 	const res = await fetch(`${API}${type}`, { next: { revalidate: 60 } })
