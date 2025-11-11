@@ -113,7 +113,7 @@ const OrderForm = () => {
 	}, [user, isMounted, form])
 
 	const paymentMethod = form.watch('paymentMethod')
-	const selectedCardId = form.watch('selectedCardId')
+	const selectedCardId = form.watch('selectedCardId') // Сейчас не используется, но можно в теории передавать в систему оплаты для автоматической вставки
 	const selectedTime = form.watch('time')
 	const timeOptions = getDeliveryTime()
 	const isCustomTimeSelected: boolean =
@@ -141,6 +141,7 @@ const OrderForm = () => {
 					purchasePaymentMethod: values.paymentMethod,
 				})
 			}
+			router.push('/')
 			clearCart()
 			form.reset({
 				name: user?.name || '',
@@ -149,9 +150,7 @@ const OrderForm = () => {
 				time: 'Побыстрее',
 				deliveryMethod: 'pickUp',
 				paymentMethod: 'SberPay',
-				selectedCardId: '',
 			})
-			router.push('/')
 		} catch (error) {
 			console.error('Ошибка при оплате:', error)
 		}
@@ -233,7 +232,7 @@ const OrderForm = () => {
 					/>
 					<PromoCode />
 					<PaymentMethod form={form} paymentMethod={paymentMethod} />
-					<div className='flex justify-between w-[60%]'>
+					<div className='flex justify-between w-[60%] px-8'>
 						<Button className='text-lg py-6 rounded-[25px] transf-none bg-[#c5c5d1] hover:bg-[#a5a5b3] text-black'>
 							<Link href='/pizza' className='flex items-center'>
 								<ChevronLeft color='black' size={30} /> Назад в корзину
@@ -244,9 +243,9 @@ const OrderForm = () => {
 								type='submit'
 								className={cn(
 									'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#349946] hover:bg-[#42ae56]',
-									(!form.formState.isValid || !selectedCardId) && 'opacity-50 cursor-not-allowed'
+									!form.formState.isValid && 'opacity-50 cursor-not-allowed'
 								)}
-								disabled={!form.formState.isValid || !selectedCardId}
+								disabled={!form.formState.isValid}
 							>
 								Оплатить через SberPay
 							</Button>
@@ -255,9 +254,9 @@ const OrderForm = () => {
 								type='submit'
 								className={cn(
 									'text-lg px-15 py-6 rounded-[25px] transf-none bg-[#f36b0a] hover:bg-[#d15b07]',
-									(!form.formState.isValid || !selectedCardId) && 'opacity-50 cursor-not-allowed'
+									!form.formState.isValid && 'opacity-50 cursor-not-allowed'
 								)}
-								disabled={!form.formState.isValid || !selectedCardId}
+								disabled={!form.formState.isValid}
 							>
 								Оформить заказ на {priceWithDiscount} Руб.
 							</Button>

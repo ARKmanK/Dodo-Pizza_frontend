@@ -253,7 +253,7 @@ const AddressDialog = ({ form }: IAddressDialogProps) => {
 																onChange={e => setSearchTerm(e.target.value)}
 															/>
 														</div>
-														<ScrollArea className='flex-1 max-h-[700px] pb-4'>
+														<ScrollArea className='flex-1 max-h-[480px]'>
 															<div className='pr-4'>
 																<Accordion type='single' collapsible className='space-y-2'>
 																	{restaurants.map(rest => (

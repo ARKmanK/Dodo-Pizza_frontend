@@ -24,6 +24,14 @@ const PaymentMethod = ({ form, paymentMethod }: IPaymentMethodProps) => {
 		if (token) setIsLogged(true)
 	}, [])
 
+	const deliveryMethod = form.watch('deliveryMethod')
+
+	useEffect(() => {
+		if (deliveryMethod === 'delivery' && paymentMethod === 'Картой в пиццерии') {
+			form.setValue('paymentMethod', 'SberPay')
+		}
+	}, [deliveryMethod, paymentMethod, form])
+
 	return (
 		<FormField
 			control={form.control}
@@ -56,16 +64,18 @@ const PaymentMethod = ({ form, paymentMethod }: IPaymentMethodProps) => {
 										Картой на сайте
 									</Label>
 								</div>
-								<div className='flex items-center gap-3'>
-									<RadioGroupItem
-										value='Картой в пиццерии'
-										id='r3'
-										className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
-									/>
-									<Label htmlFor='r3' className='text-lg'>
-										Картой в пиццерии
-									</Label>
-								</div>
+								{deliveryMethod === 'pickUp' && (
+									<div className='flex items-center gap-3'>
+										<RadioGroupItem
+											value='Картой в пиццерии'
+											id='r3'
+											className='border-gray-300 bg-white data-[state=checked]:border-[#ff6900] data-[state=checked]:border-4 data-[state=checked]:bg-white'
+										/>
+										<Label htmlFor='r3' className='text-lg'>
+											Картой в пиццерии
+										</Label>
+									</div>
+								)}
 								<div className='flex items-center gap-3'>
 									<RadioGroupItem
 										value='Наличными'

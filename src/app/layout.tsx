@@ -25,14 +25,12 @@ export default function RootLayout({
 		<html lang='en' suppressHydrationWarning>
 			<body className={`font-nimbus  antialiased`}>
 				<main className='w-full min-h-screen flex flex-col items-center'>
-					{/* <div className=''> */}
 					<StoreProvider>
 						<NavBarProvider>
 							{children}
 							<Messager />
 						</NavBarProvider>
 					</StoreProvider>
-					{/* </div> */}
 					<Footer />
 				</main>
 			</body>

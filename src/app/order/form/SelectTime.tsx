@@ -33,7 +33,7 @@ const SelectTime = ({ onSelect, isSelected = false, selectedTime }: ISelectTimeP
 					<Button
 						type='button'
 						className={cn(
-							'text-black bg-gray-100 rounded-[10px] hover:bg-gray-200 transform-none shadow-xl min-w-32 box-border transition-all duration-100 ease-out font-semibold text-sm',
+							'text-black bg-gray-100 rounded-[10px] hover:bg-gray-100 transform-none shadow-xl min-w-32 box-border transition-all duration-100 ease-out font-semibold text-sm',
 							isSelected && 'border-2 border-[#ff6900]'
 						)}
 					>

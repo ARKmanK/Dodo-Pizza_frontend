@@ -32,7 +32,7 @@ const PurchaseHistory = () => {
 						<TableHead className='text-[#747d92] font-semibold w-[150px]'>Время заказа</TableHead>
 						<TableHead className='text-[#747d92] font-semibold w-[120px]'>Сумма</TableHead>
 						<TableHead className='text-[#747d92] font-semibold w-[190px]'>Способ оплаты</TableHead>
-						<TableHead className='text-[#747d92] font-semibold'>Чек</TableHead>
+						{/* <TableHead className='text-[#747d92] font-semibold'>Чек</TableHead> */}
 					</TableRow>
 				</TableHeader>
 				<TableBody>

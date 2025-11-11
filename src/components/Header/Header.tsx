@@ -31,7 +31,7 @@ const Header = ({ showNews }: IHeaderProps) => {
 								Доставка пиццы <span className='text-[#ff7515]'>Красноярск</span>
 							</p>
 							<span className='flex text-sm font-semibold items-center'>
-								38 мин • 4.8{' '}
+								38 мин • 4.8
 								<Star
 									size={16}
 									fill='#ffd200'

@@ -38,6 +38,8 @@ export const saveState = (state: RootState) => {
 	try {
 		localStorage.setItem('cart', JSON.stringify(state.cart))
 		localStorage.setItem('user', JSON.stringify(state.user))
+		const cartJson = JSON.stringify(state.cart)
+		document.cookie = `cart=${cartJson}; path=/; max-age=2592000; SameSite=Lax`
 	} catch (e) {
 		console.error('Ошибка сохранения данных в localStorage', e)
 	}
@@ -48,6 +50,7 @@ export const saveCartState = (cart: ICartState) => {
 	try {
 		const serializedState = JSON.stringify(cart)
 		localStorage.setItem('cart', serializedState)
+		document.cookie = `cart=${serializedState}; path=/; max-age=2592000; SameSite=Lax`
 	} catch (e) {
 		console.error('Ошибка сохранения корзины в localStorage', e)
 	}
