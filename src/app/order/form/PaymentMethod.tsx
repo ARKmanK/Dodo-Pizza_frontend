@@ -108,6 +108,7 @@ const PaymentMethod = ({ form, paymentMethod }: IPaymentMethodProps) => {
 																	<RadioGroupItem
 																		value={card.id.toString()}
 																		id={`card-${card.id}`}
+																		className='border-gray-400'
 																	/>
 																	<Label
 																		htmlFor={`card-${card.id}`}

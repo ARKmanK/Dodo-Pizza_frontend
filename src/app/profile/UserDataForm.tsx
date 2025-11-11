@@ -67,10 +67,15 @@ export const formSchema = z.object({
 })
 
 const UserDataForm = () => {
+	const [isMounted, setIsMounted] = useState(false)
 	const [isDataSaved, setIsDataSaved] = useState(false)
 	const [editableFields, setEditableFields] = useState<Set<string>>(new Set())
 	const { user } = useUserSummary()
 	const { updateUserData } = useActions()
+
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -97,7 +102,7 @@ const UserDataForm = () => {
 	}, [user, form])
 
 	const isFieldEditable = (fieldName: string) => editableFields.has(fieldName)
-	const hasUserData = user && (user.name || user.phone || user.email)
+	const hasUserData = Boolean(user && (user.name || user.phone || user.email))
 
 	const toggleFieldEdit = (fieldName: string) => {
 		setEditableFields(prev => {
@@ -149,6 +154,16 @@ const UserDataForm = () => {
 
 	const hasChanges = form.formState.isDirty
 
+	const getFieldState = (fieldName: string) => {
+		if (!isMounted) {
+			return { disabled: false, readOnly: false }
+		}
+		return {
+			disabled: hasUserData && !isFieldEditable(fieldName),
+			readOnly: hasUserData && !isFieldEditable(fieldName),
+		}
+	}
+
 	return (
 		<>
 			<div className='pt-10'>
@@ -158,167 +173,183 @@ const UserDataForm = () => {
 						<FormField
 							control={form.control}
 							name='name'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Имя</FormLabel>
-									<FormControl className='max-w-[24%]'>
-										<div className='relative'>
-											<Input
-												placeholder='Имя'
-												{...field}
-												className='bg-[#f2f3f7] pr-10'
-												disabled={Boolean(hasUserData && !isFieldEditable('name'))}
-												readOnly={Boolean(hasUserData && !isFieldEditable('name'))}
-											/>
-											{hasUserData && (
-												<Button
-													type='button'
-													variant='ghost'
-													size='sm'
-													onClick={() => toggleFieldEdit('name')}
-													className='absolute right-8 top-1/2 transform -translate-y-1/2 p-1 h-6 w-6'
-												>
-													{isFieldEditable('name') ? (
-														<span className='font-semibold bg-gray-400 rounded-[6px] p-1 text-xs'>
-															Отменить
-														</span>
-													) : (
-														<span className='text-[#ff6900] hover:text-[#d15700] font-semibold text-xs'>
-															Изменить
-														</span>
-													)}
-												</Button>
-											)}
-										</div>
-									</FormControl>
-									<FormMessage className='flex items-center' />
-								</FormItem>
-							)}
+							render={({ field }) => {
+								const { disabled, readOnly } = getFieldState('name')
+								return (
+									<FormItem>
+										<FormLabel>Имя</FormLabel>
+										<FormControl className='max-w-[24%]'>
+											<div className='relative'>
+												<Input
+													placeholder='Имя'
+													{...field}
+													className='bg-[#f2f3f7] pr-10'
+													disabled={disabled}
+													readOnly={readOnly}
+												/>
+												{isMounted && hasUserData && (
+													<Button
+														type='button'
+														variant='ghost'
+														size='sm'
+														onClick={() => toggleFieldEdit('name')}
+														className='absolute right-8 top-1/2 transform -translate-y-1/2 p-1 h-6 w-6'
+													>
+														{isFieldEditable('name') ? (
+															<span className='font-semibold bg-gray-400 rounded-[6px] p-1 text-xs'>
+																Отменить
+															</span>
+														) : (
+															<span className='text-[#ff6900] hover:text-[#d15700] font-semibold text-xs'>
+																Изменить
+															</span>
+														)}
+													</Button>
+												)}
+											</div>
+										</FormControl>
+										<FormMessage className='flex items-center' />
+									</FormItem>
+								)
+							}}
 						/>
 						<FormField
 							control={form.control}
 							name='phone'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Номер телефона</FormLabel>
-									<FormControl className='max-w-[24%]'>
-										<div className='relative'>
-											<Input
-												type='tel'
-												inputMode='numeric'
-												placeholder='+79999999999'
-												maxLength={12}
-												onInput={e => handlePhoneInput(e, field)}
-												onPaste={e => handlePhonePaste(e, field)}
-												className='bg-[#f2f3f7] pr-10'
-												disabled={Boolean(hasUserData && !isFieldEditable('phone'))}
-												readOnly={Boolean(hasUserData && !isFieldEditable('phone'))}
-												{...field}
-											/>
-										</div>
-									</FormControl>
-									<FormMessage className='flex items-center' />
-								</FormItem>
-							)}
+							render={({ field }) => {
+								const { disabled, readOnly } = getFieldState('phone')
+								return (
+									<FormItem>
+										<FormLabel>Номер телефона</FormLabel>
+										<FormControl className='max-w-[24%]'>
+											<div className='relative'>
+												<Input
+													type='tel'
+													inputMode='numeric'
+													placeholder='+79999999999'
+													maxLength={12}
+													onInput={e => handlePhoneInput(e, field)}
+													onPaste={e => handlePhonePaste(e, field)}
+													className='bg-[#f2f3f7] pr-10'
+													disabled={disabled}
+													readOnly={readOnly}
+													{...field}
+												/>
+											</div>
+										</FormControl>
+										<FormMessage className='flex items-center' />
+									</FormItem>
+								)
+							}}
 						/>
 						<FormField
 							control={form.control}
 							name='birthday'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>День рождения</FormLabel>
-									<FormControl className='max-w-[24%]'>
-										<div className='relative'>
-											<BirthdayCalendarInput
-												value={field.value}
-												onChange={field.onChange}
-												placeholder='дд.мм.гггг'
-												disabled={Boolean(hasUserData && !isFieldEditable('birthday'))}
-												showIcon={false}
-											/>
-										</div>
-									</FormControl>
-									<FormMessage className='flex items-center' />
-								</FormItem>
-							)}
+							render={({ field }) => {
+								const { disabled } = getFieldState('birthday')
+								return (
+									<FormItem>
+										<FormLabel>День рождения</FormLabel>
+										<FormControl className='max-w-[24%]'>
+											<div className='relative'>
+												<BirthdayCalendarInput
+													value={field.value}
+													onChange={field.onChange}
+													placeholder='дд.мм.гггг'
+													disabled={disabled}
+													showIcon={false}
+												/>
+											</div>
+										</FormControl>
+										<FormMessage className='flex items-center' />
+									</FormItem>
+								)
+							}}
 						/>
 						<FormField
 							control={form.control}
 							name='email'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Почта</FormLabel>
-									<FormControl className='max-w-[24%]'>
-										<div className='relative'>
-											<Input
-												placeholder='example@gmail.com'
-												{...field}
-												className='bg-[#f2f3f7] pr-10'
-												disabled={Boolean(hasUserData && !isFieldEditable('email'))}
-												readOnly={Boolean(hasUserData && !isFieldEditable('email'))}
-											/>
-											{hasUserData && (
-												<Button
-													type='button'
-													variant='ghost'
-													size='sm'
-													onClick={() => toggleFieldEdit('email')}
-													className='absolute right-8 top-1/2 transform -translate-y-1/2 p-1 h-6 w-6'
-												>
-													{isFieldEditable('email') ? (
-														<span className='font-semibold bg-gray-400 rounded-[6px] p-1 text-xs'>
-															Отменить
-														</span>
-													) : (
-														<span className='text-[#ff6900] hover:text-[#d15700] font-semibold text-xs'>
-															Изменить
-														</span>
-													)}
-												</Button>
-											)}
-										</div>
-									</FormControl>
-									<FormMessage className='flex items-center' />
-								</FormItem>
-							)}
+							render={({ field }) => {
+								const { disabled, readOnly } = getFieldState('email')
+								return (
+									<FormItem>
+										<FormLabel>Почта</FormLabel>
+										<FormControl className='max-w-[24%]'>
+											<div className='relative'>
+												<Input
+													placeholder='example@gmail.com'
+													{...field}
+													className='bg-[#f2f3f7] pr-10'
+													disabled={disabled}
+													readOnly={readOnly}
+												/>
+												{isMounted && hasUserData && (
+													<Button
+														type='button'
+														variant='ghost'
+														size='sm'
+														onClick={() => toggleFieldEdit('email')}
+														className='absolute right-8 top-1/2 transform -translate-y-1/2 p-1 h-6 w-6'
+													>
+														{isFieldEditable('email') ? (
+															<span className='font-semibold bg-gray-400 rounded-[6px] p-1 text-xs'>
+																Отменить
+															</span>
+														) : (
+															<span className='text-[#ff6900] hover:text-[#d15700] font-semibold text-xs'>
+																Изменить
+															</span>
+														)}
+													</Button>
+												)}
+											</div>
+										</FormControl>
+										<FormMessage className='flex items-center' />
+									</FormItem>
+								)
+							}}
 						/>
 						<FormField
 							control={form.control}
 							name='adv'
-							render={({ field }) => (
-								<FormItem>
-									<div className='flex items-center gap-4'>
-										<FormLabel className='text-xl font-semibold'>Подписки</FormLabel>
-										{hasUserData && (
-											<Button
-												type='button'
-												variant='ghost'
-												size='sm'
-												onClick={() => toggleFieldEdit('adv')}
-												className='p-1 h-6'
-											>
-												{isFieldEditable('adv') ? (
-													<X size={16} className='text-red-500' />
-												) : (
-													<Edit size={16} className='mt-1' />
-												)}
-											</Button>
-										)}
-									</div>
-									<FormControl>
-										<div className='flex items-center'>
-											<Checkbox
-												checked={field.value}
-												onCheckedChange={field.onChange}
-												disabled={Boolean(hasUserData && !isFieldEditable('adv'))}
-											/>
-											<p className='ml-2 text-sm font-semibold text-gray-700'>
-												Получать рекламные предложения в пушах, СМС, и письмах на почту
-											</p>
+							render={({ field }) => {
+								const { disabled } = getFieldState('adv')
+								return (
+									<FormItem>
+										<div className='flex items-center gap-4'>
+											<FormLabel className='text-xl font-semibold'>Подписки</FormLabel>
+											{isMounted && hasUserData && (
+												<Button
+													type='button'
+													variant='ghost'
+													size='sm'
+													onClick={() => toggleFieldEdit('adv')}
+													className='p-1 h-6'
+												>
+													{isFieldEditable('adv') ? (
+														<X size={16} className='text-red-500' />
+													) : (
+														<Edit size={16} className='mt-1' />
+													)}
+												</Button>
+											)}
 										</div>
-									</FormControl>
-								</FormItem>
-							)}
+										<FormControl>
+											<div className='flex items-center'>
+												<Checkbox
+													checked={field.value}
+													onCheckedChange={field.onChange}
+													disabled={disabled}
+													className='border border-gray-500'
+												/>
+												<p className='ml-2 text-sm font-semibold text-gray-700'>
+													Получать рекламные предложения в пушах, СМС, и письмах на почту
+												</p>
+											</div>
+										</FormControl>
+									</FormItem>
+								)
+							}}
 						/>
 						<Button
 							type='submit'

@@ -7,7 +7,7 @@ import Revenue from './Revenue'
 const Footer = () => {
 	return (
 		<>
-			<footer className='max-w-[768px]:hidden flex flex-col items-center w-full bg-[#181818] pt-9'>
+			<footer className='max-w-[768px]:hidden flex flex-col items-center w-full bg-[#181818] pt-9 relative'>
 				<div className='md:w-[90%] lg:w-[80%] xl:w-[70%] flex '>
 					<div className='grid grid-cols-3 grid-rows-2 gap-x-10 gap-y-25 lg:text-[16px]'>
 						<div className='flex flex-col'>

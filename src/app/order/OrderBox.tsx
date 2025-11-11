@@ -22,8 +22,8 @@ const OrderBox = () => {
 			{isCartLoaded && (
 				<div
 					className={cn(
-						'w-[450px] shadow-2xl p-6 absolute right-1/10 top-[225px]',
-						isFixed ? 'fixed top-[25px] right-[190px] z-50' : ''
+						'w-[450px] shadow-2xl p-6 absolute right-1/10 top-[225px] z-50 bg-white rounded-[12px]',
+						isFixed ? 'fixed top-[25px] right-[190px]' : ' '
 					)}
 				>
 					<p className='font-bold text-xl mt-4'>Состав заказа</p>

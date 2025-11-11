@@ -14,17 +14,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { QRCodeSVG } from 'qrcode.react'
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
 import { handlePhoneInput, handlePhonePaste } from '@/utils/phoneInputHandler'
-import { getDeliveryTime } from '@/utils/getDeliveryTime'
+import { getAllTimeSlots, getDeliveryTime } from '@/utils/getDeliveryTime'
 import { cn } from '@/utils/utils'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
@@ -42,6 +33,10 @@ import { OrderObserver } from '../OrderObserver'
 import PaymentMethod from './PaymentMethod'
 import PromoCode from './PromoCode'
 import SelectTime from './SelectTime'
+import { useUserSummary } from '@/hooks/useUserSummary'
+import { useEffect, useState } from 'react'
+import AddressDialog from './AddressDialog'
+import { useRouter } from 'next/navigation'
 
 export const formSchema = z.object({
 	name: z
@@ -60,13 +55,14 @@ export const formSchema = z.object({
 		.regex(/^\+7[0-9]{10}$/, {
 			message: 'Номер телефона должен начинаться с +7 и содержать 10 цифр',
 		}),
-	address: z
-		.enum(['ул. Ленина, 10', 'ул. Мира, 5', 'ул. Победы, 15'])
-		.refine(val => val !== undefined, {
-			message: 'Выберите адрес пиццерии',
-		}),
-	time: z.enum(['Побыстрее', ...getDeliveryTime()]).refine(val => val !== undefined, {
+	address: z.string().min(1, {
+		message: 'Выберите адрес пиццерии',
+	}),
+	time: z.enum(['Побыстрее', ...getAllTimeSlots()], {
 		message: 'Выберите время самовывоза',
+	}),
+	deliveryMethod: z.enum(['delivery', 'pickUp'], {
+		message: 'Выберите способ получения',
 	}),
 	paymentMethod: z.enum(['SberPay', 'СБП', 'Картой в пиццерии', 'Наличными', 'Картой на сайте']),
 	selectedCardId: z.string().optional(),
@@ -84,29 +80,49 @@ const paymentData = {
 }
 
 const OrderForm = () => {
+	const [isMounted, setIsMounted] = useState(false)
 	const { clearCart, updatePurchaseHistory } = useActions()
 	const { priceWithDiscount } = useCartSummary()
+	const { user } = useUserSummary()
+	const router = useRouter()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: '',
 			phone: '+7',
-			address: 'ул. Ленина, 10',
+			address: '',
 			time: 'Побыстрее',
+			deliveryMethod: 'pickUp',
 			paymentMethod: 'SberPay',
 			selectedCardId: '',
 		},
 		mode: 'onChange',
 	})
 
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
+	useEffect(() => {
+		if (user && isMounted) {
+			console.log('User loaded, updating form...')
+			form.setValue('name', user.name || '')
+			form.setValue('phone', user.phone || '+7')
+		}
+	}, [user, isMounted, form])
+
 	const paymentMethod = form.watch('paymentMethod')
 	const selectedCardId = form.watch('selectedCardId')
-	const timeSlots = getDeliveryTime()
-	const timeOptions = ['Побыстрее', timeSlots[0] || '', timeSlots[1] || '']
+	const selectedTime = form.watch('time')
+	const timeOptions = getDeliveryTime()
+	const isCustomTimeSelected: boolean =
+		!!selectedTime && selectedTime !== 'Побыстрее' && !timeOptions.includes(selectedTime)
 
 	const handleTimeSelect = (time: string) => {
+		console.log('Selected time from dialog:', time)
 		form.setValue('time', time)
+		form.trigger('time')
 	}
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -126,11 +142,22 @@ const OrderForm = () => {
 				})
 			}
 			clearCart()
+			form.reset({
+				name: user?.name || '',
+				phone: user?.phone || '+7',
+				address: '',
+				time: 'Побыстрее',
+				deliveryMethod: 'pickUp',
+				paymentMethod: 'SberPay',
+				selectedCardId: '',
+			})
+			router.push('/')
 		} catch (error) {
 			console.error('Ошибка при оплате:', error)
 		}
-		form.reset()
 	}
+
+	if (!isMounted) return <div>Загрузка...</div>
 
 	return (
 		<>
@@ -163,6 +190,7 @@ const OrderForm = () => {
 										maxLength={12}
 										onInput={e => handlePhoneInput(e, field)}
 										onPaste={e => handlePhonePaste(e, field)}
+										disabled={Boolean(user?.phone)}
 										{...field}
 									/>
 								</FormControl>
@@ -170,40 +198,7 @@ const OrderForm = () => {
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name='address'
-						render={({ field }) => (
-							<FormItem className='flex'>
-								<FormLabel className='min-w-[15%] font-semibold'>Адрес пиццерии</FormLabel>
-								<FormControl className='max-w-[20%]'>
-									<DropdownMenu>
-										<DropdownMenuTrigger asChild>
-											<Button className='transf-none text-[#ff6900] p-0 hover:bg-inherit shadow-xl px-2 py-1 bg-gray-100'>
-												Выбрать
-											</Button>
-										</DropdownMenuTrigger>
-										<DropdownMenuContent className='w-56 ml-40'>
-											<DropdownMenuLabel>Выберите пиццерию</DropdownMenuLabel>
-											<DropdownMenuSeparator />
-											<DropdownMenuRadioGroup value={field.value} onValueChange={field.onChange}>
-												<DropdownMenuRadioItem value='ул. Ленина, 10'>
-													ул. Ленина, 10
-												</DropdownMenuRadioItem>
-												<DropdownMenuRadioItem value='ул. Мира, 5'>
-													ул. Мира, 5
-												</DropdownMenuRadioItem>
-												<DropdownMenuRadioItem value='ул. Победы, 15'>
-													ул. Победы, 15
-												</DropdownMenuRadioItem>
-											</DropdownMenuRadioGroup>
-										</DropdownMenuContent>
-									</DropdownMenu>
-								</FormControl>
-								<FormMessage className='ml-4 flex items-center' />
-							</FormItem>
-						)}
-					/>
+					<AddressDialog form={form} />
 					<FormField
 						control={form.control}
 						name='time'
@@ -216,13 +211,20 @@ const OrderForm = () => {
 											<Button
 												key={time}
 												type='button'
-												className='text-black rounded-[10px] hover:bg-inherit transform-none shadow-xl bg-gray-100 min-w-32 box-border transition-all duration-100 ease-out focus:border-2 focus:border-[#ff6900] font-semibold'
+												className={cn(
+													'text-black rounded-[10px] hover:bg-gray-100 transform-none shadow-xl bg-gray-100 min-w-32 box-border transition-all duration-100 ease-out focus:border-2 focus:border-[#ff6900] font-semibold',
+													selectedTime === time && 'border-2 border-[#ff6900]'
+												)}
 												onClick={() => field.onChange(time)}
 											>
 												{time}
 											</Button>
 										))}
-										<SelectTime onSelect={handleTimeSelect} />
+										<SelectTime
+											onSelect={handleTimeSelect}
+											isSelected={isCustomTimeSelected}
+											selectedTime={isCustomTimeSelected ? selectedTime : undefined}
+										/>
 									</div>
 								</FormControl>
 								<FormMessage className='absolute top-15 ml-50 flex items-center' />

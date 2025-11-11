@@ -1,4 +1,3 @@
-import { Product } from '@/types/products'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ICard {
@@ -16,6 +15,11 @@ export interface IPurchase {
 	purchasePaymentMethod: string
 }
 
+export interface IDeliveryAddress {
+	id: number
+	deliveryAddress: string
+}
+
 export interface IUser {
 	id: number
 	name: string
@@ -25,6 +29,7 @@ export interface IUser {
 	adv: boolean
 	cards: ICard[]
 	purchaseHistory: IPurchase[]
+	deliveryAddress: IDeliveryAddress[]
 }
 
 const initialState: IUser = {
@@ -36,6 +41,7 @@ const initialState: IUser = {
 	adv: false,
 	cards: [],
 	purchaseHistory: [],
+	deliveryAddress: [],
 }
 
 export const userSlice = createSlice({
@@ -65,7 +71,9 @@ export const userSlice = createSlice({
 		) => {
 			const newOrder = {
 				id:
-					state.purchaseHistory.length > 0 ? Math.max(...state.cards.map(card => card.id)) + 1 : 1,
+					state.purchaseHistory.length > 0
+						? Math.max(...state.purchaseHistory.map(history => history.id)) + 1
+						: 1,
 				purchaseNumber:
 					state.purchaseHistory.length > 0
 						? Math.max(...state.purchaseHistory.map(history => +history.purchaseNumber)) + 1
@@ -75,6 +83,20 @@ export const userSlice = createSlice({
 				purchasePaymentMethod: action.payload.purchasePaymentMethod,
 			}
 			state.purchaseHistory.push(newOrder)
+		},
+
+		updateDeliveryAddress: (state, action: PayloadAction<string>) => {
+			state.deliveryAddress.push({
+				id:
+					state.deliveryAddress.length > 0
+						? Math.max(...state.deliveryAddress.map(add => add.id)) + 1
+						: 1,
+				deliveryAddress: action.payload,
+			})
+		},
+
+		deleteDeliveryAddress: (state, action: PayloadAction<number>) => {
+			state.deliveryAddress = state.deliveryAddress.filter(add => add.id !== action.payload)
 		},
 
 		updateUserData: (
