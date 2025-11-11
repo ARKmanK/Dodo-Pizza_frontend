@@ -128,7 +128,8 @@ const OrderForm = () => {
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
 			if (values.paymentMethod === 'SberPay' || values.paymentMethod === 'Картой на сайте') {
-				await handlePayment(values, priceWithDiscount)
+				/* await handlePayment(values, priceWithDiscount) */
+				alert('Спасибо за покупку')
 			} else {
 				alert(`Ожидаем вас по адресу ${values.address}`)
 			}

@@ -4,7 +4,7 @@ import { Product } from '@/types/products'
 import { number, string, z } from 'zod'
 
 /* const API = process.env.API_URL */
-const API = 'http://localhost:3000/api/products/'
+const API = '/api/products/'
 
 export const getProducts = async (type: string) => {
 	const res = await fetch(`${API}/${type}`, { next: { revalidate: 60 } })
