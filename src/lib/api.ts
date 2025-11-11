@@ -7,7 +7,7 @@ import { number, string, z } from 'zod'
 const API = '/api/products/'
 
 export const getProducts = async (type: string) => {
-	const res = await fetch(`${API}/${type}`, { next: { revalidate: 60 } })
+	const res = await fetch(`${API}${type}`, { next: { revalidate: 60 } })
 	if (!res.ok) throw Error('Failed to fetch products')
 	return res.json() as Promise<Product[]>
 }
