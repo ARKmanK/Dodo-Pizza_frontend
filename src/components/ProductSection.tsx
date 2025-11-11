@@ -1,5 +1,6 @@
-import { API_ENDPOINTS } from '@/config/pages.config'
+'use client'
 
+import { API_ENDPOINTS } from '@/config/pages.config'
 import { getProducts } from '@/lib/api'
 import { ProductCard } from './ProductCard'
 
