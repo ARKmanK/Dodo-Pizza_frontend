@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-/* 500 */
 const breakfast = [
 	{
 		id: 500,

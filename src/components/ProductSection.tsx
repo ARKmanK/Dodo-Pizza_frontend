@@ -12,7 +12,7 @@ const ProductSection = () => {
 
 	return (
 		<>
-			{categories.map(async ({ title, endpoint }) => {
+			{/* {categories.map(async ({ title, endpoint }) => {
 				const products = await getProducts(endpoint)
 				if (products.length === 0) return null
 
@@ -26,7 +26,7 @@ const ProductSection = () => {
 						</div>
 					</section>
 				)
-			})}
+			})} */}
 		</>
 	)
 }
