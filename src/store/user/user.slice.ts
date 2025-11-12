@@ -27,6 +27,7 @@ export interface IUser {
 	birthday: string
 	email: string
 	adv: boolean
+	dodoCoins: number
 	cards: ICard[]
 	purchaseHistory: IPurchase[]
 	deliveryAddress: IDeliveryAddress[]
@@ -39,6 +40,7 @@ const initialState: IUser = {
 	birthday: '',
 	email: '',
 	adv: false,
+	dodoCoins: 0,
 	cards: [],
 	purchaseHistory: [],
 	deliveryAddress: [],
@@ -107,6 +109,7 @@ export const userSlice = createSlice({
 				birthday: string
 				email: string
 				adv: boolean
+				dodoCoins: number
 			}>
 		) => {
 			state.name = action.payload.name

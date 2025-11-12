@@ -146,6 +146,7 @@ const UserDataForm = () => {
 			birthday: date,
 			email: values.email,
 			adv: values.adv,
+			dodoCoins: 0,
 		})
 		setIsDataSaved(true)
 		setEditableFields(new Set())

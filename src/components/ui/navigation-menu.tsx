@@ -62,6 +62,7 @@ const navigationMenuTriggerStyle = cva(
 function NavigationMenuTrigger({
 	className,
 	children,
+	/* showIcon, */
 	...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
 	return (
@@ -71,10 +72,12 @@ function NavigationMenuTrigger({
 			{...props}
 		>
 			{children}{' '}
-			<ChevronDownIcon
-				className='relative top-[1px] ml-1 size-4 transition duration-300 group-data-[state=open]:rotate-180]'
-				aria-hidden='true'
-			/>
+			{
+				/* showIcon && */ <ChevronDownIcon
+					className='relative top-[1px] ml-1 size-4 transition duration-300 group-data-[state=open]:rotate-180]'
+					aria-hidden='true'
+				/>
+			}
 		</NavigationMenuPrimitive.Trigger>
 	)
 }
@@ -105,7 +108,7 @@ function NavigationMenuViewport({
 			<NavigationMenuPrimitive.Viewport
 				data-slot='navigation-menu-viewport'
 				className={cn(
-					'origin-top-center bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border shadow md:w-[var(--radix-navigation-menu-viewport-width)]',
+					'origin-top-center bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border shadow md:w-[var(--radix-navigation-menu-viewport-width)] bg-transparent border-none',
 					className
 				)}
 				{...props}
