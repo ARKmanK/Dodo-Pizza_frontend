@@ -33,7 +33,7 @@ const PromoCode = () => {
 	return (
 		<>
 			<div className='w-[30%]'>
-				<p className='text-xl font-bold lg:text-2xl mt-20'>Промокод</p>
+				<p className='text-xl font-bold lg:text-[32px] mt-20'>Промокод</p>
 				<div className='flex mt-5'>
 					<Input
 						type='text'

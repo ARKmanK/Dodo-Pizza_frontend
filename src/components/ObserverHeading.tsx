@@ -1,4 +1,5 @@
 'use client'
+
 import { useNavBar } from '@/context/NavBarContext'
 import { ReactNode, useEffect, useRef } from 'react'
 

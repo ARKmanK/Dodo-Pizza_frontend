@@ -234,8 +234,9 @@ const OrderForm = () => {
 					<PaymentMethod form={form} paymentMethod={paymentMethod} />
 					<div className='flex justify-between w-[60%] px-8'>
 						<Button className='text-lg py-6 rounded-[25px] transf-none bg-[#c5c5d1] hover:bg-[#a5a5b3] text-black'>
-							<Link href='/pizza' className='flex items-center'>
-								<ChevronLeft color='black' size={30} /> Назад в корзину
+							<Link href='/pizza' className='flex items-center justify-between space-x-10'>
+								<ChevronLeft color='black' size={30} />
+								<p className='mr-6'>Назад в корзину</p>
 							</Link>
 						</Button>
 						{paymentMethod === 'SberPay' ? (

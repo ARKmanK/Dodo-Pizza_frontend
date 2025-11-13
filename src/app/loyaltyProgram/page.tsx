@@ -44,7 +44,7 @@ const Page = () => {
 			</section>
 			<section className='w-full flex flex-col items-center bg-[#181818]'>
 				<p className='text-[40px] font-bold text-white mt-30'>ОГО, А ЭТО КАК?</p>
-				<div className='flex mt-40 items-center mr-15 relative'>
+				<div className='flex mt-10 items-center mr-15 relative'>
 					<img
 						src='https://cdn.dodostatic.net/pizza-site/dist/assets/bdd1b4f711da594de675..png'
 						alt='pizza-img'
@@ -97,7 +97,7 @@ const Page = () => {
 						</p>
 					</div>
 				</div>
-				<div className='flex mt-40 items-center mr-15'>
+				<div className='flex mt-20 items-center mr-15'>
 					<div className='flex flex-col ml-5'>
 						<p className='text-[40px] font-bold text-white leading-12'>
 							СКАНИРУЙТЕ QR-
@@ -112,7 +112,7 @@ const Page = () => {
 					</div>
 					<img src='/qr-code.png' alt='pizza-img' className='h-[400px] w-[400px]' />
 				</div>
-				<div className='mt-40 flex flex-col items-center md-30 relative'>
+				<div className='mt-25 flex flex-col items-center md-30 relative'>
 					<p className='text-white font-bold text-[40px] relative z-1'>БОЛЬШЕ ДОДОКОИНОВ</p>
 					<img
 						src='https://cdn.dodostatic.net/pizza-site/dist/assets/82ba8ca7e82c0a3e217e..png'
@@ -122,11 +122,11 @@ const Page = () => {
 					<p className='text-[24px] text-[#dcdcdc] w-[400px] text-center mt-8 z-1'>
 						Проходите миссии в мобильном приложении, чтобы получить дополнительные додокоины
 					</p>
-					<div className='mt-50 flex relative'>
+					<div className='mt-30 flex relative'>
 						<div className='relative z-1'>
 							<Card className='rounded-[30px] pt-0 -rotate-5'>
 								<CardHeader className='bg-[#eeddd3] rounded-tl-[30px] rounded-tr-[30px] p-3'>
-									<img src='/sauce.png' alt='card-img' className='w-[315px] h-[230px]' />
+									<img src='/card-img-1.png' alt='card-img' className='w-[300px] h-[160px] mt-8' />
 								</CardHeader>
 
 								<CardContent className='px-6 pb-2 max-w-[300px]'>
@@ -136,16 +136,19 @@ const Page = () => {
 									</p>
 								</CardContent>
 							</Card>
-							<div className='bg-[#ff6900] px-8 py-4 rounded-[18px] text-white text-nowrap font-semibold absolute -top-6 left-15 -rotate-13 transform'>
+							<div className='text-[20px] bg-[#ff6900] px-8 py-4 rounded-[18px] text-white text-nowrap font-semibold absolute -top-8 left-13 -rotate-13 transform'>
 								Для одного
 							</div>
 						</div>
 						<div className='relative z-1'>
 							<Card className='rounded-[30px] pt-0 rotate-5 mt-11'>
-								<CardHeader className='bg-[#eeddd3] rounded-tl-[30px] rounded-tr-[30px] p-3'>
-									<img src='/sauce.png' alt='card-img' className='w-[315px] h-[230px]' />
+								<CardHeader className='bg-[#eeddd3] rounded-tl-[30px] rounded-tr-[30px] p-3 flex justify-center'>
+									<img
+										src='/card-img-2.png'
+										alt='card-img'
+										className='w-[214px] h-[206px] center mt-3'
+									/>
 								</CardHeader>
-
 								<CardContent className='px-6 pb-2 max-w-[300px]'>
 									<p className='text-[#333333] font-semibold'>
 										Сыграйте с другом/подругой в игру: по очереди называйте виды пиццы. Кто назовет
@@ -153,14 +156,14 @@ const Page = () => {
 									</p>
 								</CardContent>
 							</Card>
-							<div className='bg-[#6031d5] px-8 py-4 rounded-[18px] text-white text-nowrap font-semibold absolute top-5 left-25 rotate-13 transform'>
+							<div className='text-[20px] bg-[#6031d5] px-8 py-4 rounded-[18px] text-white text-nowrap font-semibold absolute top-4 left-22 rotate-13 transform'>
 								Для двоих
 							</div>
 						</div>
 						<div className='relative z-1'>
 							<Card className='rounded-[30px] pt-0 -rotate-5 ml-2'>
-								<CardHeader className='bg-[#eeddd3] rounded-tl-[30px] rounded-tr-[30px] p-3'>
-									<img src='/sauce.png' alt='card-img' className='w-[315px] h-[230px]' />
+								<CardHeader className='bg-[#eeddd3] rounded-tl-[30px] rounded-tr-[30px] p-3 flex justify-center'>
+									<img src='/card-img-3.png' alt='card-img' className='w-[210px] h-[200px] mt-7' />
 								</CardHeader>
 
 								<CardContent className='px-6 pb-2  max-w-[300px]'>
@@ -169,7 +172,7 @@ const Page = () => {
 									</p>
 								</CardContent>
 							</Card>
-							<div className='bg-[#1bc262] px-8 py-4 rounded-[18px] text-white text-nowrap font-semibold absolute -top-6 left-14 -rotate-13 transform'>
+							<div className='text-[20px] bg-[#1bc262] px-8 py-4 rounded-[18px] text-white text-nowrap font-semibold absolute -top-8 left-10 -rotate-13 transform'>
 								Для Компании
 							</div>
 						</div>
@@ -190,12 +193,12 @@ const Page = () => {
 						/>
 					</div>
 				</div>
-				<div className='mt-30 flex flex-col items-center w-full px-4'>
+				<div className='mt-40 flex flex-col items-center w-full px-4'>
 					<p className='text-[40px] font-bold text-white text-center'>ПОПУЛЯРНЫЕ ВОПРОСЫ</p>
 					<Accordion
 						type='single'
 						collapsible
-						className='text-white w-full max-w-[800px] mx-auto space-y-4 mt-10'
+						className='text-white w-full max-w-[1000px] mx-auto space-y-4 mt-10'
 					>
 						{FAQ.map((item, index) => (
 							<AccordionItem

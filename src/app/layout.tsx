@@ -4,6 +4,7 @@ import { StoreProvider } from './StoreProvider'
 import Footer from '@/components/Footer/Footer'
 import { NavBarProvider } from '@/context/NavBarContext'
 import Messager from '@/components/Messager'
+import Questionnaire from '@/components/Questionnaire'
 
 export const metadata: Metadata = {
 	title: {
@@ -31,6 +32,7 @@ export default function RootLayout({
 							<Messager />
 						</NavBarProvider>
 					</StoreProvider>
+					<Questionnaire />
 					<Footer />
 				</main>
 			</body>

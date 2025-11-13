@@ -106,7 +106,7 @@ const Header = ({ showNews }: IHeaderProps) => {
 							</NavigationMenu>
 						</div>
 					</div>
-					<div className='flex space-x-6 mt-5 '>
+					<div className='flex space-x-6 mt-5'>
 						<Link
 							href='/loyaltyProgram'
 							className='flex flex-col items-center hover:text-[#ff7515] group'
