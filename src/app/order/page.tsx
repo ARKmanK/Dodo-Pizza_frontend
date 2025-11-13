@@ -9,8 +9,8 @@ const OrderPage = () => {
 			<main className='px-4 pt-4 flex-col items-center'>
 				<NavBarProvider>
 					<ObserverHeading margin='-30px'>
-						<Logo />
-						<div className='text-2xl font-bold pt-20 pl-6'>Заказ на самовывоз</div>
+						<Logo showStep={true} />
+						<div className='text-[32px] font-bold pt-20 pl-6'>Заказ на самовывоз</div>
 					</ObserverHeading>
 					<div className='pb-30'>
 						<OrderForm />

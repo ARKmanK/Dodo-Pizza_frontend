@@ -3,6 +3,7 @@ import { RootState } from '@/store/store'
 
 export const useUserSummary = () => {
 	const user = useSelector((state: RootState) => state.user)
+	const dodoCoins = user.dodoCoins
 
 	const name = user.name
 	const phone = user.phone
@@ -17,6 +18,7 @@ export const useUserSummary = () => {
 
 	return {
 		user,
+		dodoCoins,
 		name,
 		phone,
 		birthday,
@@ -28,14 +30,3 @@ export const useUserSummary = () => {
 		purchaseQuantity,
 	}
 }
-/* <input
-	type='radio'
-	name='address'
-	value={rest.address}
-	checked={field.value === rest.address}
-	onChange={e => {
-		e.stopPropagation()
-	}}
-	className='form-radio h-5 w-5 appearance-none rounded-full bg-[#f1f3f6] border-2 border-gray-300 checked:border-[6px] checked:border-orange-500 checked:bg-white focus:outline-none focus:ring-0 focus:ring-offset-0 mt-1'
-/>
- */
