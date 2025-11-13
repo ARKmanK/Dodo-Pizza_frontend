@@ -1,6 +1,6 @@
 'use client'
-
 import { Separator } from '@/components/ui/separator'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { useNavBar } from '@/context/NavBarContext'
 import { useCartSummary } from '@/hooks/useCartSummary'
 import { getProductLabel } from '@/utils/getProductLabel'
@@ -17,31 +17,49 @@ const OrderBox = () => {
 		setIsCartLoaded(true)
 	}, [cart])
 
+	const getTabSize = (quantity: number) => {
+		let size = 400
+		switch (quantity) {
+			case 1:
+				size = 100
+				break
+			case 2:
+				size = 200
+				break
+			case 3:
+				size = 300
+				break
+		}
+		return size
+	}
+
 	return (
 		<>
 			{isCartLoaded && (
 				<div
 					className={cn(
-						'w-[450px] shadow-2xl p-6 absolute right-1/10 top-[225px] z-50 bg-white rounded-[12px]',
-						isFixed ? 'fixed top-[25px] right-[190px]' : ' '
+						'w-[450px] shadow-2xl p-6 absolute right-2/16 top-[225px] z-50 bg-white rounded-[12px]',
+						isFixed && 'fixed top-[25px] right-[238px]'
 					)}
 				>
 					<p className='font-bold text-xl mt-4'>Состав заказа</p>
-					<div className='space-y-4 mt-7 mb-4'>
-						{cart.products.map(product => (
-							<div key={product.id}>
-								<div className='font-bold mb-1.5'>
-									<div className='flex justify-between'>
-										<p className='w-50 line-clamp-1'>{product.title}</p>
-										<span className=''>{product.quantity * product.price} Руб.</span>
+					<ScrollArea className='mt-4' style={{ height: `${getTabSize(quantity)}px` }}>
+						<div className='space-y-4 pr-4 '>
+							{cart.products.map(product => (
+								<div key={product.id}>
+									<div className='font-bold mb-1.5'>
+										<div className='flex justify-between'>
+											<p className='w-50 line-clamp-1'>{product.title}</p>
+											<span>{product.quantity * product.price} Руб.</span>
+										</div>
+										<p className='line-clamp-1 font-light w-70'>{product.description}</p>
 									</div>
-									<p className='line-clamp-1 font-light w-70'>{product.description}</p>
+									<Separator />
 								</div>
-								<Separator />
-							</div>
-						))}
-					</div>
-					<div className='text-sm font-semibold py-2 space-y-2 '>
+							))}
+						</div>
+					</ScrollArea>
+					<div className='text-sm font-semibold py-2 space-y-2'>
 						<div className='flex justify-between'>
 							<p>{`${quantity} ${getProductLabel(quantity)}`}</p>
 							<span>{price} Руб.</span>

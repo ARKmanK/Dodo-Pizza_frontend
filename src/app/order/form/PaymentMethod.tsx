@@ -40,7 +40,7 @@ const PaymentMethod = ({ form, paymentMethod }: IPaymentMethodProps) => {
 				<FormItem className='flex relative'>
 					<FormControl>
 						<section className='p-6 bg-[#f3f3f7] min-h-[300px] w-[60%] rounded-[20px] mt-15'>
-							<p className='font-bold text-2xl'>Способы оплаты</p>
+							<p className='font-bold text-[32px]'>Способы оплаты</p>
 							<RadioGroup onValueChange={field.onChange} value={field.value} className='mt-8'>
 								<div className='flex items-center gap-3'>
 									<RadioGroupItem

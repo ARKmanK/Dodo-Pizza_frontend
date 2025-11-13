@@ -23,6 +23,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 import VerificationForm from './VerificationForm'
 import { ILoginResponse, loginUser } from '@/lib/mocks'
 import { useMutation } from '@tanstack/react-query'
+import Cookies from 'js-cookie'
 
 const formSchema = z.object({
 	phone: z.string().length(12, {
@@ -65,7 +66,7 @@ const ProfileButton = () => {
 	})
 
 	useEffect(() => {
-		const token = localStorage.getItem('token')
+		const token = Cookies.get('token')
 		if (token) setIsLogged(true)
 	}, [])
 
