@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dodo Pizza Clone: Полнофункциональная платформа для заказа еды
 
-## Getting Started
 
-First, run the development server:
+<img width="1895" height="906" alt="image" src="https://github.com/user-attachments/assets/6e7ebd99-2cb5-4590-9ce1-548547ef2959" />
 
+
+
+
+🔗 **[Ссылка на платформу](https://dodo-pizzafrontend.vercel.app)**
+
+**Данные для входа:**
+- Телефон: **+79501480107**
+- Код верификации: **1111**
+- Промокод для тестирования: **4f46gsg-g5h56dh**
+
+---
+
+## 🧪 Моки для тестирования
+
+Для тестирования аутентификации используются следующие моки:
+
+### Логин
+- `+71111111111` → "Сервер недоступен. Попробуйте позже."
+- `+72222222222` → "Неверное имя пользователя или пароль."
+- `+73333333333` → "Пользователь заблокирован."
+- `+74444444444` → "Слишком много запросов, подождите."
+
+### Верификация OTP
+- `1111` → Успешная авторизация.
+- `2222` → "Время действия кода истекло."
+- `3333` → "Сервер недоступен. Попробуйте позже."
+- Любой другой код → "Неверный код. Попробуйте ещё раз."
+
+---
+
+## 📌 О проекте
+
+Проект **Dodo Pizza Clone** — это полноценная копия платформы для заказа еды, которая включает в себя весь основной функционал оригинальной платформы Dodo Pizza. Платформа позволяет пользователям:
+- Выбирать и заказывать пиццу, напитки, десерты и другие товары.
+- Использовать корзину для управления заказом.
+- Применять промокоды для получения скидок.
+- Выбирать способ доставки (доставка или самовывоз).
+- Оплачивать заказ различными способами.
+- Просматривать историю заказов и управлять личными данными.
+
+---
+
+## 🔧 Функциональность платформы
+
+### 🏠 Главная страница
+На главной странице пользователи могут:
+- Просматривать доступные товары (пицца, напитки, десерты и т.д.).
+- Добавлять товары в корзину.
+- Открывать профиль и управлять личными данными.
+- Использовать чат с поддержкой (интерфейс присутствует, но не работает из-за ограничений Versel).
+
+---
+
+### 🛒 Корзина
+Если товары не выбраны, пользователь увидит пустую корзину:
+
+
+<img width="707" height="910" alt="image" src="https://github.com/user-attachments/assets/335bf740-6dcb-4377-9c11-bbc7f0561e8a" />
+
+
+
+Если товары добавлены, открывается окно с выбранными товарами, возможностью добавить соусы и напитки, ввести промокод, а также информацией о сумме заказа:
+
+<img width="790" height="912" alt="image" src="https://github.com/user-attachments/assets/ffaa1b9b-c270-4f08-b97b-c31ddbbdd999" />
+
+
+---
+
+### 📝 Страница заказа
+На странице заказа пользователь может:
+- Заполнить данные для доставки или самовывоза.
+- Выбрать адрес пиццерии или создать новый адрес для доставки.
+- Указать время самовывоза.
+- Выбрать способ оплаты (SberPay, картой на сайте, картой в пиццерии, наличными, через СБП).
+- Просмотреть итоговую сумму заказа.
+
+<img width="1898" height="909" alt="image" src="https://github.com/user-attachments/assets/b4c140ad-df64-4c41-a907-8a57f846ffcd" />
+<img width="1527" height="728" alt="image" src="https://github.com/user-attachments/assets/a026d394-6042-494e-ad92-cb3335898f5c" />
+
+
+---
+
+### 💳 Оплата
+При выборе оплаты через SberPay или картой на сайте открывается окно Юкасса (не работает из-за ограничений Versel). При выборе оплаты через СБП открывается диалог с QR-кодом:
+
+<img width="806" height="424" alt="image" src="https://github.com/user-attachments/assets/80bec32f-0950-436f-8999-30496510d9ae" />
+<img width="1207" height="908" alt="image" src="https://github.com/user-attachments/assets/6b00207f-76a1-4dce-8819-dc139ce23719" />
+
+
+
+---
+
+### 👤 Профиль пользователя
+В профиле пользователь может:
+- Просматривать и редактировать личные данные.
+- Управлять банковскими картами.
+- Просматривать историю заказов.
+- Выходить из аккаунта.
+
+<img width="1898" height="909" alt="image" src="https://github.com/user-attachments/assets/036c3f61-cce3-4dda-9174-e0457bef6cfe" />
+
+
+---
+
+## 🛠 Технологии
+
+| Технология       | Назначение                  |
+|------------------|-----------------------------|
+| **Next.js**      | Фронтенд (интерактивный UI) |
+| **TypeScript**   | Типизация кода              |
+| **Tailwind CSS** | Стилизация интерфейса       |
+| **Vite**         | Сборка проекта              |
+| **Redux Toolkit**| Управление состоянием       |
+| **Node.js (Express)** | Бэкенд          |
+| **Shadcn**       | UI-компоненты               |
+
+---
+
+## 🚀 Как запустить проект локально
+
+### 1️⃣ Клонируйте репозиторий
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ARKmanK/Dodo-Pizza_frontend.git
+cd Dodo-Pizza_frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2️⃣ Установите зависимости
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3️⃣ Запустите проект
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Откройте [http://localhost:3000](http://localhost:3000) в браузере.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ⚠️ Ограничения
+- **Чат (WebSockets)** не работает из-за ограничений Versel.
+- **Система оплаты (Юкасса)** не работает из-за ограничений Versel.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
